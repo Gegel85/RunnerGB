@@ -1,0 +1,16 @@
+*.o
+*~
+*.gb
+*.gbc
+*.sym
+*.sav
+*.fx
+*.cfx
+*.zfx
+*.zcfx
+*.exe
+*.pal
+.idea
+tools/compressor
+tools/palette_fixer
+Map_[0-9][0-9][0-9][0-9]_[0-9][0-9]_[0-9][0-9]__[0-9][0-9]_[0-9][0-9]_[0-9][0-9]
