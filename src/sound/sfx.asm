@@ -82,7 +82,6 @@ updateSfx::
 ;    de -> Not preserved
 ;    hl -> Not preserved
 playSfx::
-	reg CHAN_TERM_SELECT, $FF
 	di
 	ld a, [hli]
 	ld c, a
@@ -99,17 +98,24 @@ playSfx::
 	add hl, bc
 	ld [hl], a
 
+	ld b, %00010001
 	ld de, MUSIC_STRUCT_SIZE
 	ld hl, PLAYING_MUSICS
 	ld a, c
 .addLoop:
 	or a
 	jr z, .endLoop
+	sla b
 	add hl, de
 	dec a
 	jr .addLoop
 .endLoop:
 	res 1, [hl]
+
+	ld a, b
+	ld hl, CHAN_TERM_SELECT
+	or [hl]
+	ld [hl], a
 
 	pop de
 	ld d, 0

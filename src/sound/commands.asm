@@ -131,15 +131,17 @@ handlerDisableTerminals:
 	ld b, a
 	inc de
 
+	ld hl, $CD00 | ($FF & CHAN_TERM_SELECT)
+	and [hl]
+	ld [hl], a
+
 	bit 1, [hl]
 	ret z
 
+	ld a, b
 	ld hl, CHAN_TERM_SELECT
 	and [hl]
-	ld [hl], b
-	ld hl, $CD00 | ($FF & CHAN_TERM_SELECT)
-	and [hl]
-	ld [hl], b
+	ld [hl], a
 	xor a
 	ret
 
@@ -152,15 +154,17 @@ handlerEnableTerminals:
 	ld b, a
 	inc de
 
+	ld hl, $CD00 | ($FF & CHAN_TERM_SELECT)
+	or [hl]
+	ld [hl], a
+
 	bit 1, [hl]
 	ret z
 
+	ld a, b
 	ld hl, CHAN_TERM_SELECT
 	or [hl]
-	ld [hl], b
-	ld hl, $CD00 | ($FF & CHAN_TERM_SELECT)
-	or [hl]
-	ld [hl], b
+	ld [hl], a
 	xor a
 	ret
 
