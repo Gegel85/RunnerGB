@@ -158,6 +158,26 @@ gameLoop:
 
 	reg SCROLL_PAST_TILE, 1
 
+	ld a, [RIGHT_MAP_SRC_TILES]
+	inc a
+	ld b, a
+
+	; IF a ends with 1111 (aka $1F), the number is at the end of the line.
+	and $1F
+	ld a, b
+	jp nz, .noOverflow
+	sub $20
+	and $F0
+.noOverflow
+	ld [RIGHT_MAP_SRC_TILES], a
+	ld l, a
+	ld a, [RIGHT_MAP_SRC_TILES + 1]
+	ld h, a
+	ld a, (GroundSprite - BackgroundChrs) / $10
+	ld [hl], a
+	reg VBK, 1
+	ld [hl], 1
+	reset VBK
 .noSpawn:
 	call drawScore
 	call scrollBg
