@@ -160,12 +160,7 @@ gameLoop:
 	jr z, .noSpawn
 	; ground height
 	; création new tile
-	call createNewTile
 
-	ld hl, GROUND_POS
-	call shiftTiles
-	ld hl, GROUND_POS_X8
-    call shiftTiles
 	reg SCROLL_PAST_TILE, 1
 
 	ld a, [RIGHT_MAP_SRC_TILES]
@@ -243,6 +238,17 @@ gameLoop:
 	ld [hl], a
 
 .calcNextScroll:
+	call createNewTile
+
+	ld a, [SCROLL_PAST_TILE]
+	bit 0, a
+
+	jp nz, gameLoop
+
+	ld hl, GROUND_POS
+	call shiftTiles
+	ld hl, GROUND_POS_X8
+    call shiftTiles
 	call calcNextScroll
 	jp gameLoop
 
