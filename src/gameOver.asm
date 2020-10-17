@@ -10,6 +10,18 @@ gameOver::
 	add hl, de
 	ld a, b
 	ld [hl], a
+
+	call random
+	and 1
+	ld de, PLAYING_MUSICS
+	jr z, .playAlarm2
+
+	ld hl, AlarmOneTheme
+	jr .start
+.playAlarm2:
+	ld hl, AlarmTwoTheme
+.start:
+	call startMusic
 .loop:
 	halt
 	ld hl, LY

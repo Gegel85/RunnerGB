@@ -175,7 +175,7 @@ createNewTile::
 	ld a, 1 ;the amount of tile to add/sub
 	ld b, a
 	call random
-    bit 0, a
+	bit 0, a
 	jr z, .incValue
 
 .decValue:

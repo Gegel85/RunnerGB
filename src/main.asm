@@ -60,19 +60,14 @@ game::
 	ld de, SPRITES_BUFFER
 	call copyMemory
 
-	ld a, $FF
-	ld hl, SOUND_TERM_CONTROL
-	writeRegisterI a
-	writeRegisterI a
-	writeRegisterI a
-	ld de, PLAYING_MUSICS
-	ld hl, SleepingTheme
-	call startMusic
-
 	reg WX, $78
 	reg WY, $88
 
 initGame:
+	ld de, PLAYING_MUSICS
+	ld hl, SleepingTheme
+	call startMusic
+
 	xor a
 	ld de, FRAME_COUNTER
 	ld bc, MAX_SCROLL_COUNTER - FRAME_COUNTER + 1
@@ -237,18 +232,13 @@ gameLoop:
 	ld a, [GROUND_POS_X8 + 20]
 	ld [hl], a
 
-.calcNextScroll:
 	call createNewTile
-
-	ld a, [SCROLL_PAST_TILE]
-	bit 0, a
-
-	jp nz, gameLoop
-
 	ld hl, GROUND_POS
 	call shiftTiles
 	ld hl, GROUND_POS_X8
-    call shiftTiles
+	call shiftTiles
+
+.calcNextScroll:
 	call calcNextScroll
 	jp gameLoop
 
