@@ -29,7 +29,8 @@ IMGS = \
 	assets/player.png \
 	assets/spike.png \
 	assets/moon.png \
-	assets/bg.png
+	assets/bg.png \
+	assets/nocgberror.png
 
 COMPRESSED_IMGS = \
 	assets/numbers.png

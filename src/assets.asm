@@ -20,4 +20,8 @@ BackgroundTileMap::
 
 NumbersSprite::
 	incbin "assets/numbers.cfx"
+NoCGBScreen::
 NumbersEnd::
+	incbin "assets/nocgberror.fx"
+NoCGBScreenMap::
+	incbin "assets/nocgberror.map"

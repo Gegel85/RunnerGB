@@ -21,10 +21,6 @@ WPRAM_init::
 ;    de -> Not preserved
 ;    hl -> Not preserved
 init::
-	pop de
-	ld sp, $FFFF
-	push de
-
 	reg INTERRUPT_ENABLED, VBLANK_INTERRUPT | TIMER_INTERRUPT
 
 	call waitVBLANK

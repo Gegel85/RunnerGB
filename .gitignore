@@ -10,6 +10,7 @@
 *.zcfx
 *.exe
 *.pal
+*.map
 .idea
 tools/compressor
 tools/palette_fixer

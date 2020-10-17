@@ -3,6 +3,36 @@ include "src/macro.asm"
 
 SECTION "Main", ROM0
 
+notCGB::
+	call waitVBLANK
+	reset LCD_CONTROL
+	reg BGP, $E4
+	ld hl, NoCGBScreen
+        ld de, VRAM_START
+        ld bc, NoCGBScreenMap - NoCGBScreen
+        call copyMemory
+
+	ld b, 18
+	push hl
+        ld hl, VRAM_BG_START
+        pop de
+.loop:
+        ld c, 20
+.miniLoop:
+	ld a, [de]
+	ld [hli], a
+	inc de
+	dec c
+	jr nz, .miniLoop
+	push bc
+	ld bc, 12
+	add hl, bc
+	pop bc
+	dec b
+	jr nz, .loop
+
+	reg LCD_CONTROL, %11010001
+
 ; Locks the CPU
 ; Params:
 ;    None
@@ -15,9 +45,11 @@ lockup::
 	halt
 	jr lockup
 
-
 ; Main function
 main::
+	ld sp, $FFFF
+	cp CGB_A_INIT
+	jp nz, notCGB
 	call init
 
 game::
