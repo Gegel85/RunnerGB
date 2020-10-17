@@ -1,12 +1,13 @@
-musicChan2SleepingTheme::
-	setRegisters $C1, $57, $00, $00
+musicChan1SleepingTheme::
+	setRegisters $05, $C1, $57, $00, $00
+	enableTerminals  %00010001
 .loop:
-	setVolume $57
+    setVolume $57
 
-	repeat 3
-	setFrequency NOTE_G / 2, $80
-	wait SEMIBREVE
-	setFrequency NOTE_B, $80
+    repeat 3
+    setFrequency NOTE_G / 2, $80
+    wait SEMIBREVE
+    setFrequency NOTE_B, $80
     wait DOTTED_SEMIBREVE
     setFrequency NOTE_A, $80
     wait MINIM
@@ -85,4 +86,4 @@ musicChan2SleepingTheme::
     wait MINIM
     enableTerminals  %00010001
     stopMusic
-	jump .loop
+    jump .loop

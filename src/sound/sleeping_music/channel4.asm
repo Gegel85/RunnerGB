@@ -1,13 +1,17 @@
 musicChan4SleepingTheme::
-	setRegisters $3F, $F1, $00, $00
+	setRegisters $3F, $81, $00, $00
     stopMusic
     jump musicChan4SleepingTheme
 
-	setVolume $F1
+	setVolume $81
 	setFrequencyRaw $7D, $80
-	wait SEMIQUAVER
+	wait QUAVER
 	setFrequencyRaw $7D, $80
-	wait SEMIQUAVER
+	wait QUAVER
+    setFrequencyRaw $7D, $80
+    wait QUAVER
+    setFrequencyRaw $7D, $80
+    wait QUAVER
 	wait QUAVER + CROTCHET + MINIM
 
 	setFrequencyRaw $7D, $80
@@ -21,6 +25,8 @@ musicChan4SleepingTheme::
 	setFrequencyRaw $7D, $80
 	wait SEMIQUAVER
 	wait QUAVER + CROTCHET + MINIM
+
+
 
 	setFrequencyRaw $7D, $80
 	wait SEMIQUAVER

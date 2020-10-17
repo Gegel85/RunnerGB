@@ -1,5 +1,6 @@
-musicChan1SleepingTheme::
-	setRegisters $05, $00, $A5, $00, $00
+musicChan2SleepingTheme::
+	setRegisters $00, $A5, $00, $00
+    enableTerminals  %00100010
 .loop:
 	setVolume $A5
 	setFrequency NOTE_G, $80
