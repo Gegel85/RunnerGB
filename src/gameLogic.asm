@@ -159,3 +159,34 @@ calcNextScroll:
 	ld a, b
 	ld [CURRENT_SCROLL], a
 	ret
+
+; Set the height value for the next ground tile
+; Params:
+;    None
+; Return:
+;    None
+; Registers:
+;    af -> Not preserved
+;    b  -> Not preserved
+;    c  -> Preserved
+;    de -> Preserved
+;    hl -> Preserved
+createNewTile::
+	call random
+	ld b, a
+	and %11
+	ld a, [GROUND_POS + 21]
+	jr nz, .incValue
+
+.decValue:
+	sub b
+	jr .saveNewTile
+.incValue:
+	add b
+.saveNewTile:
+	ld [GROUND_POS + 21], a
+	sla a
+	sla a
+	sla a
+	ld [GROUND_POS_X8 + 21], a
+	ret

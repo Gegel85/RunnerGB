@@ -155,7 +155,9 @@ gameLoop:
 	ld a, b
 	and %11111000
 	jr z, .noSpawn
-
+	; ground height
+	; création new tile
+	call createNewTile
 	reg SCROLL_PAST_TILE, 1
 
 .noSpawn:
