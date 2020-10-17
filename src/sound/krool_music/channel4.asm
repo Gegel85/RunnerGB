@@ -1,5 +1,7 @@
-musicChan4KRoolTheme::
+musicChan4SleepingTheme::
 	setRegisters $3F, $F1, $00, $00
+    stopMusic
+    jump musicChan4SleepingTheme
 
 	setVolume $F1
 	setFrequencyRaw $7D, $80
@@ -175,5 +177,3 @@ musicChan4KRoolTheme::
 	setFrequencyRaw $34, $80
 	wait CROTCHET
 	continue
-	stopMusic
-	jump musicChan4KRoolTheme

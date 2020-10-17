@@ -65,9 +65,9 @@ game::
 	writeRegisterI a
 	writeRegisterI a
 	writeRegisterI a
-	;ld de, PLAYING_MUSICS
-	;ld hl, kingKRoolTheme
-	;call startMusic
+	ld de, PLAYING_MUSICS
+	ld hl, SleepingTheme
+	call startMusic
 
 
 	reg WX, $78

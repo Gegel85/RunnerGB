@@ -1,5 +1,8 @@
-musicChan3KRoolTheme::
+musicChan3SleepingTheme::
 	setRegisters $80, $00, $00, $AC, $85
+	stopMusic
+	jump musicChan3SleepingTheme
+
 	repeat 27 * 4
 	enableTerminals  %00000100
 	disableTerminals %01000000
@@ -18,5 +21,4 @@ musicChan3KRoolTheme::
 	wait SEMIQUAVER
 	continue
 	setVolume 0
-	stopMusic
-	jump musicChan3KRoolTheme
+
