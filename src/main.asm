@@ -65,9 +65,9 @@ game::
 	writeRegisterI a
 	writeRegisterI a
 	writeRegisterI a
-	;ld de, PLAYING_MUSICS
-	;ld hl, kingKRoolTheme
-	;call startMusic
+	ld de, PLAYING_MUSICS
+	ld hl, SleepingTheme
+	call startMusic
 
 	reg WX, $78
 	reg WY, $88
@@ -168,6 +168,26 @@ gameLoop:
     call shiftTiles
 	reg SCROLL_PAST_TILE, 1
 
+	ld a, [RIGHT_MAP_SRC_TILES]
+	inc a
+	ld b, a
+
+	; IF a ends with 1111 (aka $1F), the number is at the end of the line.
+	and $1F
+	ld a, b
+	jp nz, .noOverflow
+	sub $20
+	and $F0
+.noOverflow
+	ld [RIGHT_MAP_SRC_TILES], a
+	ld l, a
+	ld a, [RIGHT_MAP_SRC_TILES + 1]
+	ld h, a
+	ld a, (GroundSprite - BackgroundChrs) / $10
+	ld [hl], a
+	reg VBK, 1
+	ld [hl], 1
+	reset VBK
 .noSpawn:
 	call drawScore
 	call scrollBg
@@ -235,6 +255,8 @@ include "src/gameOver.asm"
 include "src/spikes.asm"
 include "src/gameLogic.asm"
 include "src/rendering.asm"
+include "src/sound/alarm_musics/alarm_one/main.asm"
+include "src/sound/alarm_musics/alarm_two/main.asm"
 include "src/sound/sfx/sfxs.asm"
-include "src/sound/krool_music/main.asm"
+include "src/sound/sleeping_music/main.asm"
 include "src/utils.asm"
