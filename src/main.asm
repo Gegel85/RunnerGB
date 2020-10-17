@@ -128,14 +128,14 @@ gameLoop:
 	jp gameLoop
 
 
+include "src/init.asm"
+include "src/interrupts.asm"
+include "src/sound/music.asm"
+include "src/sound/sfx.asm"
 include "src/gameOver.asm"
 include "src/spikes.asm"
 include "src/gameLogic.asm"
-include "src/interrupts.asm"
-include "src/init.asm"
 include "src/rendering.asm"
-include "src/sound/music.asm"
-include "src/sound/sfx.asm"
 include "src/sound/sfx/sfxs.asm"
 include "src/sound/krool_music/main.asm"
 include "src/utils.asm"
