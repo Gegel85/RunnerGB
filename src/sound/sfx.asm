@@ -39,7 +39,6 @@ updateSfx::
 	jr nz, .restoreLoop
 
 	ld b, 3
-	ld b, b
 	ld e, $24
 	ld l, e
 .restoreLoop2:

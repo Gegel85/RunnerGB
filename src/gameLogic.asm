@@ -69,15 +69,16 @@ incrementScore:
 ; Registers:
 ;    af -> Not preserved
 ;    bc -> Preserved
-;    d  -> Not preserved
-;    e  -> Preserved
+;    de -> Not preserved
 ;    hl -> Not preserved
 updatePlayerState::
+	ld a, [GROUND_POS_X8]
+	ld e, a
 	ld hl, PLAYER_SPEED_Y
 	ld a, [hld]
 	add [hl]
 	ld [hl], a
-	cp $62
+	cp e
 	jr nc, .onGround
 
 	inc hl
@@ -93,7 +94,7 @@ updatePlayerState::
 	ret
 
 .onGround:
-	ld a, $62
+	ld a, e
 	ld [hli], a
 
 .resetSpeed:

@@ -1,5 +1,5 @@
 checkstack
-ignore $291
+ignore $32A
 ignore $462
 ignore $48E
 cbreak pc >= $8000 && pc < $FF80

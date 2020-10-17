@@ -58,21 +58,22 @@ game::
 	ld de, SPRITES_BUFFER
 	call copyMemory
 
-	ld de, PLAYING_MUSICS
-	ld hl, kingKRoolTheme
-	call startMusic
+	ld a, $FF
+	ld hl, SOUND_TERM_CONTROL
+	writeRegisterI a
+	writeRegisterI a
+	writeRegisterI a
+	;ld de, PLAYING_MUSICS
+	;ld hl, kingKRoolTheme
+	;call startMusic
+
 
 	reg WX, $78
 	reg WY, $88
 
-	call copyBgMap
-	reg LCD_CONTROL, %11110011
 	reg MOON_POS, $80
 
 initGame:
-	ld a, [MOON_POS]
-	push af
-
 	xor a
 	ld de, FRAME_COUNTER
 	ld bc, MAX_SCROLL_COUNTER - FRAME_COUNTER + 1
@@ -82,14 +83,34 @@ initGame:
 	ld bc, $A0 - $18
 	call fillMemory
 
-	pop af
-	ld [MOON_POS], a
-	reg PLAYER_Y, $62
+	reg PLAYER_Y, $60
 	call moveSprites
 
 	reg ANIMATION_COUNTER, 5
 	reg MAX_SCROLL, 1
+	reset SCROLL_X
+	ld [MOON_POS], a
 
+	call waitVBLANK
+	reset LCD_CONTROL
+
+	ld a, $C
+	ld de, GROUND_POS
+	ld bc, 21
+	call fillMemory
+
+	ld a, $60
+	ld de, GROUND_POS_X8
+	ld bc, 21
+	call fillMemory
+
+	call copyBgMap
+
+	ld a, $6A
+	ld de, $99C0
+	ld bc, 20
+	call fillMemory
+	reg LCD_CONTROL, %11110011
 gameLoop:
 	halt
 	ld hl, LY
@@ -100,18 +121,21 @@ gameLoop:
 	reset INTERRUPT_REQUEST
 
 	call drawScore
+	call scrollBg
+	call updateSpikes
+	call displaySpikes
+
+	; Animation
+	ld hl, ANIMATION_COUNTER
+	dec [hl]
+	call z, animatePlayerMoon
+
 	call incrementScore
 
 	ld a, e
 	and $10
 	xor d
 	call nz, updateBgSpeed
-	call scrollBg
-
-	; Animation
-	ld hl, ANIMATION_COUNTER
-	dec [hl]
-	call z, animatePlayerMoon
 	call updatePlayerState
 
 	call getKeys
@@ -124,9 +148,6 @@ gameLoop:
 	call z, playerJump
 	bit UP_BIT, a
 	call z, playerJump
-
-	call updateSpikes
-	call nz, displaySpikes
 
 	ld hl, SPAWN_COUNTER
 	ld a, [CURRENT_SCROLL]
@@ -150,9 +171,12 @@ gameLoop:
 	inc [hl]
 	ld a, [hl]
 	ld e, a
+	sla e
 	add hl, de
 	ld a, $C0
 	sub b
+	ld [hld], a
+	ld a, [GROUND_POS_X8 + 20]
 	ld [hl], a
 
 .calcNextScroll:

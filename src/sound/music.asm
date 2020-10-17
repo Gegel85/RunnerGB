@@ -148,12 +148,9 @@ updateMusics::
 	ret
 
 .update:
-	ld de, updateMusic
-	push de
-	push de
-	push de
-	push de
-	ret
+	call updateMusic
+	call updateMusic
+	call updateMusic
 
 updateMusic::
 	push hl

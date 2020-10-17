@@ -14,45 +14,17 @@ updateSpikes:
 	and a
 	ret z
 
-	ld e, a
 	ld c, a
 	ld a, [CURRENT_SCROLL]
 	ld d, a
 	xor a
 	ld b, a
 .updateSpikeLoop:
+	inc hl
 	ld a, [hl]
 	sub d
 	ld [hli], a
-	cp a, $F9
-	jr nc, .keepSpike
-	cp a, $C0
-	jr c, .keepSpike
 
-	push hl
-	ld hl, NB_SPIKES
-	dec [hl]
-	pop hl
-
-	dec e
-	ret z
-
-	add sp, -2
-	push de
-	push bc
-
-	ld d, h
-	ld e, l
-	dec de
-	call copyMemory
-
-	pop bc
-	pop de
-	pop hl
-	dec hl
-
-	jr .nextSpike
-.keepSpike:
 	cp 40
 	jr c, .nextSpike
 	cp 43
@@ -60,25 +32,34 @@ updateSpikes:
 	ld b, a
 	ld a, [PLAYER_Y]
 	cp $60
-	jr c, .nextSpike
-
-	call moveSprites
-
-	ld hl, SPRITES_BUFFER + $19
-	ld d, 0
-	ld a, [NB_SPIKES]
-	sub c
-	sla a
-	sla a
-	ld e, a
-	add hl, de
-	ld a, b
-	ld [hl], a
-	jp gameOver
+	jr nc, gameOver
 
 .nextSpike:
 	dec c
 	jr nz, .updateSpikeLoop
+
+	ld a, [SPIKES + 1]
+	cp a, $F9
+	jr nc, .keepSpike
+	cp a, $C0
+	jr c, .keepSpike
+
+	ld hl, NB_SPIKES
+	ld a, [hl]
+	dec a
+	ld [hl], a
+	ret z
+
+	push af
+	ld de, SPIKES
+	ld hl, SPIKES + 2
+	ld b, 0
+	sla a
+	ld c, a
+	call copyMemory
+	pop af
+	ld e, a
+.keepSpike:
 	or 1
 	ret
 
@@ -94,11 +75,17 @@ updateSpikes:
 ;    de -> Not preserved
 ;    hl -> Not preserved
 displaySpikes:
-	ld b, e
+	ld hl, NB_SPIKES
+	xor a
+	or [hl]
+	ret z
+	ld b, a
 	ld hl, SPRITES_BUFFER + $18
 	ld de, SPIKES
 .displayLoop:
-	ld a, 121
+	ld a, [de]
+	inc de
+	add $18
 	ld [hli], a
 	ld a, [de]
 	inc de
@@ -115,5 +102,5 @@ displaySpikes:
 	ld hl, SPRITES_BUFFER + $18
 .delLastSprite:
 	xor a
-	ld [hl], a
+	ld [hli], a
 	ret

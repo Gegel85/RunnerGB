@@ -1,5 +1,8 @@
 SECTION "Assets", ROMX[$6800], BANK[1]
 
+BackgroundTileMap::
+	incbin "assets/bg.map"
+
 BackgroundChrs::
 	incbin "assets/bg.fx"
 
@@ -14,9 +17,6 @@ SpikeSprite::
 
 MoonSprite::
 	incbin "assets/moon.fx"
-
-BackgroundTileMap::
-	incbin "assets/bg.map"
 
 NumbersSprite::
 	incbin "assets/numbers.cfx"

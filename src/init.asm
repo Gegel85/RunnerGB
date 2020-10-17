@@ -38,7 +38,7 @@ init::
 
 	ld de, VRAM_START
 	ld hl, BackgroundChrs
-	ld bc, BackgroundTileMap - BackgroundChrs
+	ld bc, NumbersSprite - BackgroundChrs
 	call copyMemory
 
 	ld de, VRAM_START + $800
