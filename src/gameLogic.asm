@@ -128,7 +128,7 @@ playerJump:
 
 ; Calculates the next scroll (in pixels)
 ; Params:
-;    d -> 0 if the player is not able to jump, else a non 0 value
+;    None
 ; Return:
 ;    None
 ; Registers:
