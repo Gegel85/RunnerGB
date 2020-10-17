@@ -96,48 +96,35 @@ gameLoop:
 	call updateSpikes
 	call nz, displaySpikes
 
-
-spawnSpike:
 	ld hl, SPAWN_COUNTER
 	ld a, [CURRENT_SCROLL]
 	add [hl]
 	ld [hl], a
-	and %11100000
-	jr z, calcNextScroll
+	ld b, a
+	and %11111000
+	jr z, .calcNextScroll
+
+	ld a, b
+	and %00000111
+	ld b, a
+	ld [hl], a
 
 	call random
-	and %1111
-	jr nz, calcNextScroll
+	and %11
+	jr nz, .calcNextScroll
 
-	ld [hl], a
 	ld d, a
 	ld hl, NB_SPIKES
 	inc [hl]
 	ld a, [hl]
 	ld e, a
 	add hl, de
-	ld [hl], $C0
-
-calcNextScroll:
-	ld a, [MAX_SCROLL]
-	ld b, a
-	ld hl, SCROLL_COUNTER
-	xor a
-	or [hl]
-	jr z, .fullSpeed
-
-	dec [hl]
-	dec b
-	jr .scroll
-
-.fullSpeed:
-	ld hl, MAX_SCROLL_COUNTER
-	ld a, [hld]
+	ld a, $C0
+	sub b
 	ld [hl], a
 
-.scroll:
-	ld a, b
-	ld [CURRENT_SCROLL], a
+.calcNextScroll:
+	call calcNextScroll
 	jp gameLoop
 
 

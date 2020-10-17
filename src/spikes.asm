@@ -30,7 +30,6 @@ updateSpikes:
 	jr c, .keepSpike
 
 	push hl
-	push hl
 	ld hl, NB_SPIKES
 	dec [hl]
 	pop hl
@@ -38,6 +37,7 @@ updateSpikes:
 	dec e
 	ret z
 
+	add sp, -2
 	push de
 	push bc
 

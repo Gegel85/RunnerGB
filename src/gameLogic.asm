@@ -103,6 +103,7 @@ updatePlayerState::
 	ld [hli], a
 	ret
 
+
 ; Makes the player jump
 ; Params:
 ;    d -> 0 if the player is not able to jump, else a non 0 value
@@ -122,4 +123,38 @@ playerJump:
 	ld hl, jumpSfx
 	call playSfx
 	reg PLAYER_SPEED_Y, -2
+	ret
+
+
+; Calculates the next scroll (in pixels)
+; Params:
+;    d -> 0 if the player is not able to jump, else a non 0 value
+; Return:
+;    None
+; Registers:
+;    af -> Not preserved
+;    b  -> Not preserved
+;    c  -> Preserved
+;    de -> Preserved
+;    hl -> Not preserved
+calcNextScroll:
+	ld a, [MAX_SCROLL]
+	ld b, a
+	ld hl, SCROLL_COUNTER
+	xor a
+	or [hl]
+	jr z, .fullSpeed
+
+	dec [hl]
+	dec b
+	jr .scroll
+
+.fullSpeed:
+	ld hl, MAX_SCROLL_COUNTER
+	ld a, [hld]
+	ld [hl], a
+
+.scroll:
+	ld a, b
+	ld [CURRENT_SCROLL], a
 	ret

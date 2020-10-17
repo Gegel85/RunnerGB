@@ -18,10 +18,11 @@ SECTION "joypad", ROM0
 
 crash::
 	ld b, b
+.loop:
 	ld hl, $FF44
 	ld a, $90
 	cp [hl]
-	jr nc, crash
+	jr nc, .loop
 
 	dec l
 	xor a
@@ -31,12 +32,12 @@ crash::
 	ld hl, crashText
 	ld c, 22
 	ld de, $9800
-.loop:
+.copyLoop:
 	ld a, [hli]
 	ld [de], a
 	inc e
 	dec c
-	jr nz, .loop
+	jr nz, .copyLoop
 	jp lockup
 
 SECTION "Start", ROM0
