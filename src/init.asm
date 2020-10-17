@@ -21,7 +21,7 @@ WPRAM_init::
 ;    de -> Not preserved
 ;    hl -> Not preserved
 init::
-	reg INTERRUPT_ENABLED, VBLANK_INTERRUPT | TIMER_INTERRUPT
+	reg INTERRUPT_ENABLED, VBLANK_INTERRUPT | TIMER_INTERRUPT | LCD_STAT_INTERRUPT
 
 	call waitVBLANK
 	reset LCD_CONTROL
