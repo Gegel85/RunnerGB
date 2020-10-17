@@ -55,9 +55,38 @@ init::
 	ld bc, init - initDMA
         call copyMemory
 
-	reg OBP0, %10010000
-	reg OBP1, %10000100
-	reg BGP, $E4
+	ld hl, BGPI
+	ld a, $80
+	ld [hli], a
+	ld [hl], $FF
+	ld [hl], $7F
+	ld [hl], $B5
+	ld [hl], $56
+	ld [hl], $4a
+	ld [hl], $29
+	xor a
+	ld [hl], a
+	ld [hli], a
+
+	set 7, a
+	ld [hli], a
+	ld [hl], $FF
+	ld [hl], $7F
+	ld [hl], $B5
+	ld [hl], $56
+	ld [hl], $4a
+	ld [hl], $29
+	xor a
+	ld [hl], a
+	ld [hl], a
+	ld [hl], $FF
+	ld [hl], $7F
+	ld [hl], $B5
+	ld [hl], $56
+	ld [hl], $FF
+	ld [hl], $7F
+	ld [hl], $4a
+	ld [hl], $29
 
 	pop de
 	ld sp, $E000

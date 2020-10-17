@@ -54,10 +54,10 @@ moveSprites:
 SpriteInitArray::
 	db 114,      40, (PlayerSprite - BackgroundChrs) / $10    , 0
 	db 114 + 8,  40, (PlayerSprite - BackgroundChrs) / $10 + 1, 0
-	db 24     , $80,   (MoonSprite - BackgroundChrs) / $10    , 1 << 4
-	db 24 + 8 , $80,   (MoonSprite - BackgroundChrs) / $10 + 1, 1 << 4
-	db 24     , $88,   (MoonSprite - BackgroundChrs) / $10 + 2, 1 << 4
-	db 24 + 8 , $88,   (MoonSprite - BackgroundChrs) / $10 + 3, 1 << 4
+	db 24     , $80,   (MoonSprite - BackgroundChrs) / $10    , 1
+	db 24 + 8 , $80,   (MoonSprite - BackgroundChrs) / $10 + 1, 1
+	db 24     , $88,   (MoonSprite - BackgroundChrs) / $10 + 2, 1
+	db 24 + 8 , $88,   (MoonSprite - BackgroundChrs) / $10 + 3, 1
 
 ; Copy the background tile map in VRAM
 ; Params:
