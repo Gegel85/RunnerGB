@@ -69,7 +69,6 @@ game::
 	;ld hl, kingKRoolTheme
 	;call startMusic
 
-
 	reg WX, $78
 	reg WY, $88
 
@@ -135,6 +134,10 @@ initGame:
 	ld de, $99C0
 	ld bc, 22
 	call fillMemory
+
+	reg LYC, 68
+	reg STAT_CONTROL, %01000000
+
 	reg LCD_CONTROL, %11110011
 gameLoop:
 	reset INTERRUPT_REQUEST

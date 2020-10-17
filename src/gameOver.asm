@@ -12,6 +12,12 @@ gameOver::
 	ld [hl], a
 .loop:
 	halt
+	ld hl, LY
+	ld a, $90
+	cp [hl]
+	jr nc, .loop
+	ld a, [BG_1_POS]
+	ld [SCROLL_X], a
 	call getKeys
 	bit START_BIT, a
 	jp z, initGame
