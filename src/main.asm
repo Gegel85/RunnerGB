@@ -161,6 +161,11 @@ gameLoop:
 	; ground height
 	; création new tile
 	call createNewTile
+
+	ld hl, GROUND_POS
+	call shiftTiles
+	ld hl, GROUND_POS_X8
+    call shiftTiles
 	reg SCROLL_PAST_TILE, 1
 
 .noSpawn:
