@@ -35,6 +35,8 @@ vblank_interrupt::
 ;    de -> Preserved
 ;    hl -> Preserved
 hblank_interrupt::
+	ld a, [BG_2_POS]
+	ld [SCROLL_X], a
 	reti
 
 ; Timer interrupt handler

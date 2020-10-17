@@ -65,10 +65,9 @@ game::
 	writeRegisterI a
 	writeRegisterI a
 	writeRegisterI a
-	;ld de, PLAYING_MUSICS
-	;ld hl, kingKRoolTheme
-	;call startMusic
-
+	ld de, PLAYING_MUSICS
+	ld hl, SleepingTheme
+	call startMusic
 
 	reg WX, $78
 	reg WY, $88
@@ -135,6 +134,10 @@ initGame:
 	ld de, $99C0
 	ld bc, 22
 	call fillMemory
+
+	reg LYC, 68
+	reg STAT_CONTROL, %01000000
+
 	reg LCD_CONTROL, %11110011
 gameLoop:
 	reset INTERRUPT_REQUEST
@@ -245,6 +248,8 @@ include "src/gameOver.asm"
 include "src/spikes.asm"
 include "src/gameLogic.asm"
 include "src/rendering.asm"
+include "src/sound/alarm_musics/alarm_one/main.asm"
+include "src/sound/alarm_musics/alarm_two/main.asm"
 include "src/sound/sfx/sfxs.asm"
-include "src/sound/krool_music/main.asm"
+include "src/sound/sleeping_music/main.asm"
 include "src/utils.asm"

@@ -10,9 +10,22 @@
 ;    hl -> Not preserved
 scrollBg::
 	ld a, [CURRENT_SCROLL]
-	ld hl, SCROLL_X
+	ld b, a
+	ld hl, BG_2_POS
+	add [hl]
+	ld [hld], a
+	ld a, b
+	add [hl]
+	ld b, a
+	and 11
+	ld [hld], a
+	srl b
+	srl b
+	ld a, b
 	add [hl]
 	ld [hl], a
+	ld [SCROLL_X], a
+
 
 ; Moves the player and moon sprites accordingly
 ; Params:
