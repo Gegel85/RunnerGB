@@ -22,11 +22,14 @@ all:	$(LIBS) $(NAME)
 $(NAME):$(OBJ)
 	$(CC) -o $(NAME) $(OBJ) $(LDFLAGS)
 
+fixObjPals:fixObjPals.o
+	$(CC) -o fixObjPals fixObjPals.o $(LDFLAGS)
+
 clean:
-	$(RM) $(OBJ)
+	$(RM) $(OBJ) fixObjPals.o
 
 fclean:	clean
-	$(RM) $(NAME) $(NAME).exe
+	$(RM) $(NAME) $(NAME).exe fixObjPals fixObjPals.exe
 
 ffclean:fclean
 

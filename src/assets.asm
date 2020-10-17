@@ -1,27 +1,29 @@
-SECTION "Assets", ROMX[$6800], BANK[1]
+SECTION "Assets", ROMX[$6000], BANK[1]
 
 BackgroundTileMap::
 	incbin "assets/bg.map"
 
 BackgroundChrs::
-	incbin "assets/bg.fx"
+	incbin "assets/bg.cfx"
 
 PlayerSprite::
 	incbin "assets/player.fx"
 
 GroundSprite::
-	incbin "assets/ground.fx"
+	incbin "assets/ground.cfx"
 
 SpikeSprite::
-	incbin "assets/spike.fx"
+	incbin "assets/spike.ofx"
 
 MoonSprite::
-	incbin "assets/moon.fx"
+	incbin "assets/moon.ofx"
 
 NumbersSprite::
-	incbin "assets/numbers.cfx"
+	incbin "assets/numbers.zfx"
 NoCGBScreen::
 NumbersEnd::
 	incbin "assets/nocgberror.fx"
 NoCGBScreenMap::
 	incbin "assets/nocgberror.map"
+
+include "src/palettes.asm"

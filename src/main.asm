@@ -41,9 +41,11 @@ notCGB::
 ; Registers:
 ;    N/A
 lockup::
-	reg INTERRUPT_ENABLED, JOYPAD_INTERRUPT
+	reset INTERRUPT_REQUEST
+	ld [INTERRUPT_ENABLED], a
+.loop:
 	halt
-	jr lockup
+	jr .loop
 
 ; Main function
 main::
@@ -106,7 +108,14 @@ initGame:
 
 	call copyBgMap
 
-	ld a, $6A
+	reg VBK, 1
+	ld a, 1
+	ld de, $99C0
+	ld bc, 20
+	call fillMemory
+
+	reset VBK
+	ld a, (GroundSprite - BackgroundChrs) / $10
 	ld de, $99C0
 	ld bc, 20
 	call fillMemory

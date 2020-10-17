@@ -41,7 +41,7 @@ init::
 	ld bc, NumbersSprite - BackgroundChrs
 	call copyMemory
 
-	ld de, VRAM_START + $800
+	ld de, VRAM_START + $A00
 	ld hl, NumbersSprite
 	ld bc, NumbersEnd - NumbersSprite
 	call uncompress
@@ -51,38 +51,28 @@ init::
 	ld bc, init - initDMA
         call copyMemory
 
-	ld hl, BGPI
+	ld de, BGPI
 	ld a, $80
-	ld [hli], a
-	ld [hl], $FF
-	ld [hl], $7F
-	ld [hl], $B5
-	ld [hl], $56
-	ld [hl], $4a
-	ld [hl], $29
-	xor a
-	ld [hl], a
-	ld [hli], a
+	ld [de], a
+	inc e
+	ld b, 8 * 2
+	ld hl, bgPal
+.bgPalLoop:
+	ld a, [hli]
+	ld [de], a
+	dec b
+	jr nz, .bgPalLoop
 
-	set 7, a
-	ld [hli], a
-	ld [hl], $FF
-	ld [hl], $7F
-	ld [hl], $B5
-	ld [hl], $56
-	ld [hl], $4a
-	ld [hl], $29
-	xor a
-	ld [hl], a
-	ld [hl], a
-	ld [hl], $FF
-	ld [hl], $7F
-	ld [hl], $B5
-	ld [hl], $56
-	ld [hl], $FF
-	ld [hl], $7F
-	ld [hl], $4a
-	ld [hl], $29
+	inc e
+	ld a, $80
+	ld [de], a
+	inc e
+	ld b, 8 * 3
+.objPalLoop:
+	ld a, [hli]
+	ld [de], a
+	dec b
+	jr nz, .objPalLoop
 
 	pop de
 	ld sp, $E000

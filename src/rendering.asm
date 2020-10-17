@@ -54,10 +54,10 @@ moveSprites:
 SpriteInitArray::
 	db 114,      40, (PlayerSprite - BackgroundChrs) / $10    , 0
 	db 114 + 8,  40, (PlayerSprite - BackgroundChrs) / $10 + 1, 0
-	db 24     , $80,   (MoonSprite - BackgroundChrs) / $10    , 1
-	db 24 + 8 , $80,   (MoonSprite - BackgroundChrs) / $10 + 1, 1
-	db 24     , $88,   (MoonSprite - BackgroundChrs) / $10 + 2, 1
-	db 24 + 8 , $88,   (MoonSprite - BackgroundChrs) / $10 + 3, 1
+	db 24     , $80,   (MoonSprite - BackgroundChrs) / $10    , %00100001
+	db 24 + 8 , $80,   (MoonSprite - BackgroundChrs) / $10 + 1, %00100001
+	db 24     , $88,   (MoonSprite - BackgroundChrs) / $10    , %00000001
+	db 24 + 8 , $88,   (MoonSprite - BackgroundChrs) / $10 + 1, %00000001
 
 ; Copy the background tile map in VRAM
 ; Params:
@@ -70,34 +70,46 @@ SpriteInitArray::
 ;    de -> Not preserved
 ;    hl -> Not preserved
 copyBgMap::
+	reg VBK, 1
 	xor a
-	push af
+	ld de, VRAM_BG_START
+	ld bc, $400
+	call fillMemory
+
+	reset VBK
 	ld hl, BackgroundTileMap
 	ld de, VRAM_BG_START
-.copyLoop:
-	ld c, 16
-.copyLoop2:
-	ld a, [hli]
-	ld [de], a
-	inc de
-	dec c
-	jr nz, .copyLoop2
+	ld bc, $400
+	jp copyMemory
 
-	pop af
-	xor 1
-	push af
-	jr z, .skip
-
-	push bc
-	ld bc, -16
-	add hl, bc
-	pop bc
-	jr .copyLoop
-.skip:
-	bit 2, d
-	jr z, .copyLoop
-	pop af
-	ret
+;	xor a
+;	push af
+;	ld hl, BackgroundTileMap
+;	ld de, VRAM_BG_START
+;.copyLoop:
+;	ld c, 16
+;.copyLoop2:
+;	ld a, [hli]
+;	ld [de], a
+;	inc de
+;	dec c
+;	jr nz, .copyLoop2
+;
+;	pop af
+;	xor 1
+;	push af
+;	jr z, .skip
+;
+;	push bc
+;	ld bc, -16
+;	add hl, bc
+;	pop bc
+;	jr .copyLoop
+;.skip:
+;	bit 2, d
+;	jr z, .copyLoop
+;	pop af
+;	ret
 
 ; Draw the score on the window
 ; Params:
@@ -118,12 +130,12 @@ drawScore:
 	ld b, a
 	swap b
 	and %00001111
-	or $80
+	or $A0
 	dec l
 	ld [hld], a
 	ld a, b
 	and %00001111
-	or $80
+	or $A0
 	ld [hl], a
 	xor a
 	or l

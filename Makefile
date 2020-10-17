@@ -25,50 +25,81 @@ SRCS = \
 	src/text.asm
 
 IMGS = \
-	assets/ground.png \
 	assets/player.png \
-	assets/spike.png \
-	assets/moon.png \
-	assets/bg.png \
 	assets/nocgberror.png
 
 COMPRESSED_IMGS = \
 	assets/numbers.png
 
-COMPRESSEDIMGSFX = $(COMPRESSED_IMGS:%.png=%.cfx)
+COLORED_IMGS = \
+	assets/ground.png \
+	assets/bg.png \
 
-IMGSFX = $(IMGS:%.png=%.fx)
+OBJ_COLORED_IMGS = \
+	assets/spike.png \
+	assets/moon.png \
 
 OBJS = $(SRCS:%.asm=%.o)
 
-all:	tools/compressor $(NAME).$(EXT)
+COMPRESSED_COLORED_IMGS =
+
+IMGSFX = $(IMGS:%.png=%.fx)
+
+COMPRESSEDIMGSFX = $(COMPRESSED_IMGS:%.png=%.zfx)
+
+COLORED_IMGS_FX = $(COLORED_IMGS:%.png=%.cfx)
+
+OBJ_COLORED_IMGS_FX = $(OBJ_COLORED_IMGS:%.png=%.ofx)
+
+COMPRESSED_COLORED_IMGS_FX = $(COMPRESSED_COLORED_IMGS:%.png=%.zcfx)
+
+PALS = $(COLORED_IMGS:%.png=%.pal) $(COMPRESSED_COLORED_IMGS:%.png=%.pal) $(OBJ_COLORED_IMGS:%.png=%.pal)
+
+MAPS = $(IMGS:%.png=%.map) $(COMPRESSED_IMGS:%.png=%.map) $(COLORED_IMGS:%.png=%.map) $(COMPRESSED_COLORED_IMGS:%.png=%.map)
+
+all:	tools/compressor tools/fixObjPals $(NAME).gbc
 
 tools/compressor:
 	$(MAKE) -C tools compressor
 
+tools/fixObjPals:
+	$(MAKE) -C tools fixObjPals
+
 run:	re
-	wine "$(BGB_PATH)" ./$(NAME).$(EXT)
+	wine "$(BGB_PATH)" ./$(NAME).gbc
 
 runw:	re
-	"$(BGB_PATH)" ./$(NAME).$(EXT)
+	"$(BGB_PATH)" ./$(NAME).gbc
 
 %.fx : %.png
-	$(FX) $(FXFLAGS) -o $@ -t `echo $@ | sed "s/.\{3\}$$//"`.map $<
+	$(FX) $(FXFLAGS) -t `echo $@ | sed 's/.\{3\}$$//'`.map -o $@ $<
 
 %.cfx : %.png
-	$(FX) $(FXFLAGS) -o $@ -t `echo $@ | sed 's/.\{4\}$$//'`.map $<
+	$(FX) $(FXFLAGS) -t `echo $@ | sed 's/.\{4\}$$//'`.map -P -o $@ $<
+
+%.ofx : %.png
+	$(FX) $(FXFLAGS) -t `echo $@ | sed 's/.\{4\}$$//'`.map -P -o `echo $@ | sed 's/.\{1\}$$//'`o $<
+	tools/fixObjPals `echo $@ | sed 's/.\{4\}$$//'`.pal `echo $@ | sed 's/.\{1\}$$//'`o
+
+%.zfx : %.png
+	$(FX) $(FXFLAGS) -t `echo $@ | sed 's/.\{4\}$$//'`.map -o $@ $<
+	tools/compressor $@
+
+%.zcfx : %.png
+	$(FX) $(FXFLAGS) -t `echo $@ | sed 's/.\{5\}$$//'`.map -P -o $@ $<
+	tools/palette_fixer $(@:%.zcfx=%.pal)
 	tools/compressor $@
 
 %.o : %.asm
 	$(ASM) -o $@ $(ASMFLAGS) $<
 
-$(NAME).$(EXT):	$(COMPRESSEDIMGSFX) $(IMGSFX) $(OBJS)
+$(NAME).$(EXT): $(COLORED_IMGS_FX) $(COMPRESSED_COLORED_IMGS_FX) $(OBJ_COLORED_IMGS_FX) $(COMPRESSEDIMGSFX) $(IMGSFX) $(OBJS) $(OBJ_COLORED_IMGS_FX)
 	$(LD) $(LDFLAGS) -o $@ $(OBJS)
 	$(FIX) $(FIXFLAGS) $@
 
 clean:
 	$(MAKE) -C tools clean
-	$(RM) $(OBJS) $(IMGSFX) $(COMPRESSEDIMGSFX)
+	$(RM) $(OBJS) $(IMGSFX) $(COMPRESSEDIMGSFX) $(COLORED_IMGS_FX) $(COMPRESSED_COLORED_IMGS_FX) $(MAPS) $(PALS) $(OBJ_COLORED_IMGS_FX) $(OBJ_COLORED_IMGS:%.png=%.ofo)
 
 fclean:	clean
 	$(MAKE) -C tools fclean

@@ -92,7 +92,7 @@ displaySpikes:
 	ld [hli], a
 	ld a, (SpikeSprite - BackgroundChrs) / $10
 	ld [hli], a
-	ld a, 0
+	ld a, 2
 	ld [hli], a
 	dec b
 	jr nz, .displayLoop

@@ -10,8 +10,11 @@
 *.zcfx
 *.exe
 *.pal
+*.ofx
+*.ofo
 *.map
 .idea
 tools/compressor
 tools/palette_fixer
+tools/fixObjPals
 Map_[0-9][0-9][0-9][0-9]_[0-9][0-9]_[0-9][0-9]__[0-9][0-9]_[0-9][0-9]_[0-9][0-9]
