@@ -73,8 +73,6 @@ game::
 	reg WX, $78
 	reg WY, $88
 
-	reg MOON_POS, $80
-
 initGame:
 	xor a
 	ld de, FRAME_COUNTER
@@ -91,19 +89,37 @@ initGame:
 	reg ANIMATION_COUNTER, 5
 	reg MAX_SCROLL, 1
 	reset SCROLL_X
-	ld [MOON_POS], a
+	reg MOON_POS, $80
 
 	call waitVBLANK
 	reset LCD_CONTROL
 
+	ld hl, LEFT_MAP_PTR
+	ld a, (BackgroundTileMap + $1C0) & $FF
+	ld [hli], a
+	ld a, (BackgroundTileMap + $1C0) >> 8
+	ld [hli], a
+	ld a, (VRAM_BG_START + $1C0) & $FF
+	ld [hli], a
+	ld a, (VRAM_BG_START + $1C0) >> 8
+	ld [hli], a
+	ld a, (BackgroundTileMap + $1C0 + 21) & $FF
+	ld [hli], a
+	ld a, (BackgroundTileMap + $1C0 + 21) >> 8
+	ld [hli], a
+	ld a, (VRAM_BG_START + $1C0 + 21) & $FF
+	ld [hli], a
+	ld a, (VRAM_BG_START + $1C0 + 21) >> 8
+	ld [hli], a
+
 	ld a, $C
 	ld de, GROUND_POS
-	ld bc, 21
+	ld bc, 22
 	call fillMemory
 
 	ld a, $60
 	ld de, GROUND_POS_X8
-	ld bc, 21
+	ld bc, 22
 	call fillMemory
 
 	call copyBgMap
@@ -111,33 +127,48 @@ initGame:
 	reg VBK, 1
 	ld a, 1
 	ld de, $99C0
-	ld bc, 20
+	ld bc, 22
 	call fillMemory
 
 	reset VBK
 	ld a, (GroundSprite - BackgroundChrs) / $10
 	ld de, $99C0
-	ld bc, 20
+	ld bc, 22
 	call fillMemory
 	reg LCD_CONTROL, %11110011
 gameLoop:
+	reset INTERRUPT_REQUEST
+	ld [SCROLL_PAST_TILE], a
 	halt
 	ld hl, LY
 	ld a, $90
 	cp [hl]
 	jr nc, gameLoop
 
-	reset INTERRUPT_REQUEST
+	ld hl, SPAWN_COUNTER
+	ld a, [CURRENT_SCROLL]
+	add [hl]
+	ld b, a
+	and %00000111
+	ld [hl], a
 
+	ld a, b
+	and %11111000
+	jr z, .noSpawn
+
+	reg SCROLL_PAST_TILE, 1
+
+.noSpawn:
 	call drawScore
 	call scrollBg
-	call updateSpikes
-	call displaySpikes
 
 	; Animation
 	ld hl, ANIMATION_COUNTER
 	dec [hl]
 	call z, animatePlayerMoon
+
+	call updateSpikes
+	call displaySpikes
 
 	call incrementScore
 
@@ -158,18 +189,9 @@ gameLoop:
 	bit UP_BIT, a
 	call z, playerJump
 
-	ld hl, SPAWN_COUNTER
-	ld a, [CURRENT_SCROLL]
-	add [hl]
-	ld [hl], a
-	ld b, a
-	and %11111000
+	ld a, [SCROLL_PAST_TILE]
+	or a
 	jr z, .calcNextScroll
-
-	ld a, b
-	and %00000111
-	ld b, a
-	ld [hl], a
 
 	call random
 	and %11
@@ -182,6 +204,8 @@ gameLoop:
 	ld e, a
 	sla e
 	add hl, de
+	ld a, [CURRENT_SCROLL]
+	ld b, a
 	ld a, $C0
 	sub b
 	ld [hld], a
