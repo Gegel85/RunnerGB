@@ -1,4 +1,4 @@
 jumpSfx::
-	db 0
-	db $20
-	db $77, $C1, $B3, $72, $86
+	db 0                       ; Channel (0-3)
+	db $20                     ; Sound duration in frames
+	db $77, $C1, $B3, $72, $86 ; Sound data copied in channel registers

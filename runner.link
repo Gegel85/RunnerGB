@@ -1,6 +1,6 @@
 ROM0
-	org $0000
-	"reset"
+	org $003D
+	"crash"
 	
 	org $0040
 	"vblank"

@@ -49,9 +49,9 @@ updateSfx::
 	dec b
 	jr nz, .restoreLoop2
 
-	pop bc
-	pop de
 	pop hl
+	pop de
+	pop bc
 .skip:
 	ld a, e
 	add MUSIC_STRUCT_SIZE
@@ -71,6 +71,16 @@ updateSfx::
 	pop af
 	ret
 
+; Plays a sound effect
+; Params:
+;    hl -> Pointer to the SFX struct
+; Return:
+;    None
+; Registers:
+;    af -> Not preserved
+;    bc -> Not preserved
+;    de -> Not preserved
+;    hl -> Not preserved
 playSfx::
 	reg CHAN_TERM_SELECT, $FF
 	di
@@ -102,6 +112,7 @@ playSfx::
 	res 1, [hl]
 
 	pop de
+	ld d, 0
 	ld hl, registersProperties
 	add hl, de
 	ld d, h

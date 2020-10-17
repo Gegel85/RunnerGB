@@ -1,6 +1,6 @@
 ; Uncompress compressed data
 ; Params:
-;    a  ->
+;    a  -> Compression mode
 ;    hl -> Pointer to the compressed data
 ;    de -> Destination address
 ;    bc -> Data size
