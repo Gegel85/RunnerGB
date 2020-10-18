@@ -266,7 +266,7 @@ shiftTiles::
 
 
 ; show the credits
-showCredits::
+showCreditsf::
 	;ld b, b
 	call getKeys
 	cpl
@@ -278,13 +278,13 @@ showCredits::
 	call copyMemory
 	ret
 
-showCreditsf::
+showCredits::
 	call waitVBLANK
 	reset LCD_CONTROL
-	reg BGP, $E4
+	;reg BGP, $E4
 	ld hl, NumbersCredits
     ld de, VRAM_START
-    ld bc, Credits - NumbersCredits
+    ld bc, EndNumbersCredits - NumbersCredits
 	call copyMemory
 
 	ld b, 18

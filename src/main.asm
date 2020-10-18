@@ -54,7 +54,6 @@ main::
 	jp nz, notCGB
 	call init
 	jp showCredits
-mainMenu::
 
 mainMenu::
 	ld de, PLAYING_MUSICS

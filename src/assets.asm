@@ -53,6 +53,7 @@ EndLogoChr::
 
 NumbersCredits::
 	incbin "assets/credits.cfx"
+EndNumbersCredits::
 Credits::
 	incbin "assets/credits.map"
 
