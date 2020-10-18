@@ -1,15 +1,15 @@
 cmdHandlers::
 	dw handlerSetFrequency
-        dw handlerSetVolume
-        dw handlerWait
-        dw handlerJump
-        dw handlerDisableTerminals
-        dw handlerEnableTerminals
-        dw handlerSetRegisters
-        dw handlerStopMusic
-        dw handlerPlay
-        dw handlerRepeat
-        dw handlerContinue
+	dw handlerSetVolume
+	dw handlerWait
+	dw handlerJump
+	dw handlerDisableTerminals
+	dw handlerEnableTerminals
+	dw handlerSetRegisters
+	dw handlerStopMusic
+	dw handlerPlay
+	dw handlerRepeat
+	dw handlerContinue
 
 handlerRepeat:
 	pop hl

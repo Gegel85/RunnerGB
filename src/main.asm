@@ -423,6 +423,8 @@ include "src/gameLogic.asm"
 include "src/rendering.asm"
 include "src/sound/alarm_musics/alarm_one/main.asm"
 include "src/sound/alarm_musics/alarm_two/main.asm"
+include "src/sound/main_menu_music/main.asm"
+
 include "src/sound/sfx/sfxs.asm"
 include "src/sound/sleeping_music/main.asm"
 include "src/utils.asm"
