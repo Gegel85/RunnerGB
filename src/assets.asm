@@ -1,7 +1,7 @@
-SECTION "Assets", ROMX[$6000], BANK[1]
+SECTION "Assets", ROMX[$4000], BANK[1]
 
 BackgroundTileMap::
-	incbin "assets/bg.map"
+	incbin "assets/bg.tilemap"
 
 BackgroundChrs::
 	incbin "assets/bg.cfx"
@@ -32,9 +32,23 @@ NoCGBScreen::
 NumbersEnd::
 	incbin "assets/nocgberror.fx"
 NoCGBScreenMap::
-	incbin "assets/nocgberror.map"
+	incbin "assets/nocgberror.tilemap"
 
 ScoreZoneMap::
-	incbin "assets/scoring_zone.map"
+	incbin "assets/scoring_zone.tilemap"
+
+MainMenuMap::
+	incbin "assets/main_menu.tilemap"
+
+MainMenuChrs::
+	incbin "assets/main_menu.cfx"
+EndMMChr::
+
+LogoMap::
+	incbin "assets/logo.tilemap"
+
+LogoChrs::
+	incbin "assets/logo.cfx"
+EndLogoChr::
 
 include "src/palettes.asm"

@@ -54,7 +54,105 @@ main::
 	jp nz, notCGB
 	call init
 
+mainMenu::
+	call waitVBLANK
+	reset LCD_CONTROL
+
+	ld de, VRAM_START
+	ld hl, MainMenuChrs
+	ld bc, EndMMChr - MainMenuChrs
+	call copyMemory
+
+	ld hl, LogoChrs
+	ld bc, EndLogoChr - LogoChrs
+	call copyMemory
+
+	ld hl, $9800
+	ld de, MainMenuMap
+	ld bc, $20 - 20
+.copyLoop:
+	ld a, [de]
+	inc de
+	ld [hli], a
+	bit 2, l
+	jr z, .copyLoop
+	bit 4, l
+	jr z, .copyLoop
+	add hl, bc
+	bit 2, h
+	jr z, .copyLoop
+
+	reg VBK, 1
+	xor a
+	ld de, VRAM_BG_START
+	ld bc, 32 * 32
+	call fillMemory
+	reset VBK
+
+	ld hl, mainMenuPal
+	ld de, BGPI
+	ld a, $80
+	ld [de], a
+	inc e
+	ld b, 8 + 6
+.bgPalLoop:
+	ld a, [hli]
+	ld [de], a
+	dec b
+	jr nz, .bgPalLoop
+	xor a
+	ld [de], a
+	ld [de], a
+
+	ld b, 8
+	ld hl, logoPal
+.bgPalLoop2:
+	ld a, [hli]
+	ld [de], a
+	dec b
+	jr nz, .bgPalLoop2
+
+	ld hl, $9844
+	ld de, LogoMap
+	ld b, 12
+.copyLoop2:
+	reg VBK, 1
+	ld a, [de]
+	add (EndMMChr - MainMenuChrs) / $10
+	inc de
+	ld [hl], 2
+	ld c, a
+	reset VBK
+	ld a, c
+	ld [hli], a
+	dec b
+	jr nz, .copyLoop2
+	ld bc, $20 - 12
+	add hl, bc
+	ld b, 12
+	ld a, $E4
+	cp l
+	jr nz, .copyLoop2
+
+	reg LCD_CONTROL, %11010010
+
+.loop:
+	reset INTERRUPT_REQUEST
+	ld [SCROLL_PAST_TILE], a
+	halt
+	ld hl, LY
+	ld a, $90
+	cp [hl]
+	jr nc, .loop
+
+	call getKeys
+	bit START_BIT, a
+	jr nz, .loop
+
 game::
+	call waitVBLANK
+	reset LCD_CONTROL
+
 	ld hl, SpriteInitArray
 	ld bc, $18
 	ld de, SPRITES_BUFFER
@@ -86,6 +184,39 @@ game::
 	call fillMemory
 
 	reset VBK
+
+	ld de, VRAM_START
+	ld hl, BackgroundChrs
+	ld bc, NumbersSprite - BackgroundChrs
+	call copyMemory
+
+	ld de, VRAM_START + $A00
+	ld hl, NumbersSprite
+	ld bc, NumbersEnd - NumbersSprite
+	call copyMemory
+
+	ld de, BGPI
+	ld a, $80
+	ld [de], a
+	inc e
+	ld b, 8 * 3
+	ld hl, bgPal
+.bgPalLoop:
+	ld a, [hli]
+	ld [de], a
+	dec b
+	jr nz, .bgPalLoop
+
+	inc e
+	ld a, $80
+	ld [de], a
+	inc e
+	ld b, 8 * 3
+.objPalLoop:
+	ld a, [hli]
+	ld [de], a
+	dec b
+	jr nz, .objPalLoop
 
 initGame:
 	ld de, PLAYING_MUSICS

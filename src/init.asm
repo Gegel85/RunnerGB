@@ -36,43 +36,10 @@ init::
 	ld de, $FF30
 	call copyMemory
 
-	ld de, VRAM_START
-	ld hl, BackgroundChrs
-	ld bc, NumbersSprite - BackgroundChrs
-	call copyMemory
-
-	ld de, VRAM_START + $A00
-	ld hl, NumbersSprite
-	ld bc, NumbersEnd - NumbersSprite
-	call copyMemory
-
         ld de, $FF80
         ld hl, initDMA
 	ld bc, init - initDMA
         call copyMemory
-
-	ld de, BGPI
-	ld a, $80
-	ld [de], a
-	inc e
-	ld b, 8 * 3
-	ld hl, bgPal
-.bgPalLoop:
-	ld a, [hli]
-	ld [de], a
-	dec b
-	jr nz, .bgPalLoop
-
-	inc e
-	ld a, $80
-	ld [de], a
-	inc e
-	ld b, 8 * 3
-.objPalLoop:
-	ld a, [hli]
-	ld [de], a
-	dec b
-	jr nz, .objPalLoop
 
 	pop de
 	ld sp, $E000

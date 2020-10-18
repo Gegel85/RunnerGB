@@ -13,5 +13,12 @@ playerPal::
 moonPal::
 	incbin "assets/moon.pal"
 
-spikePal:
+spikePal::
 	incbin "assets/spike.pal"
+
+mainMenuPal::
+	incbin "assets/main_menu.pal"
+	incbin "assets/main_menu.pal"
+
+logoPal::
+	incbin "assets/logo.pal"
