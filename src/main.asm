@@ -55,6 +55,10 @@ main::
 	call init
 
 mainMenu::
+	ld de, PLAYING_MUSICS
+	ld hl, MainMenuTheme
+	call startMusic
+
 	call waitVBLANK
 	reset LCD_CONTROL
 
