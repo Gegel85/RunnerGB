@@ -213,6 +213,13 @@ gameLoop:
 	or a
 	jr z, .calcNextScroll
 
+	ld b, b
+	call createNewTile
+	ld hl, GROUND_POS
+	call shiftTiles
+	ld hl, GROUND_POS_X8
+	call shiftTiles
+
 	call random
 	and %11
 	jr nz, .calcNextScroll
@@ -231,12 +238,6 @@ gameLoop:
 	ld [hld], a
 	ld a, [GROUND_POS_X8 + 20]
 	ld [hl], a
-
-	call createNewTile
-	ld hl, GROUND_POS
-	call shiftTiles
-	ld hl, GROUND_POS_X8
-	call shiftTiles
 
 .calcNextScroll:
 	call calcNextScroll

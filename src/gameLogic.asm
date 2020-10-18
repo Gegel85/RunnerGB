@@ -72,7 +72,7 @@ incrementScore:
 ;    de -> Not preserved
 ;    hl -> Not preserved
 updatePlayerState::
-	ld a, [GROUND_POS_X8]
+	ld a, [GROUND_POS_X8 + 3]
 	ld e, a
 	ld hl, PLAYER_SPEED_Y
 	ld a, [hld]
@@ -160,6 +160,7 @@ calcNextScroll:
 	ld [CURRENT_SCROLL], a
 	ret
 
+
 ; Set the height value for the next ground tile
 ; Params:
 ;    None
@@ -224,10 +225,8 @@ shiftTiles::
 	ld b, 21
 .loop:
 	inc hl
-	ld a, [hl]
-	dec hl
-	ld [hl], a
-	inc hl
+	ld a, [hld]
+	ld [hli], a
 	dec b
 
 	jr nz, .loop
