@@ -172,39 +172,37 @@ calcNextScroll:
 ;    de -> Preserved
 ;    hl -> Preserved
 createNewTile::
-	ld a, 1 ;the amount of tile to add/sub
-	ld b, a
 	call random
+	and %110
+
+	ld hl, GROUND_POS + 21
+	ld a, [hl]
+	jr nz, .checkNewTile
+
 	bit 0, a
 	jr z, .incValue
 
 .decValue:
-	ld a, [GROUND_POS + 21]
-	sub b
+	dec a
 	jr .checkNewTile
 .incValue:
-	ld a, [GROUND_POS + 21]
-	add b
+	inc a
 	jr .checkNewTile
 .setMaxHeight:
-	ld b, $20
+	ld a, $06
 	jr .checkNewTile
-
 .setMinHeight:
-	ld b, $0C
+	ld a, $0F
 	jr .saveNewTile
 
 .checkNewTile:
 	; min should be 0x4 and max 0x0C
-	ld b, a
-	sub $4 ; to avoid too high ground
+	cp $06 ; to avoid too high ground
 	jr c, .setMaxHeight
-	ld a, b
-	sub $0C
+	cp $0F
 	jr nc, .setMinHeight
 .saveNewTile:
-	ld a, b
-	ld [GROUND_POS + 21], a
+	ld [hl], a
 	sla a
 	sla a
 	sla a
