@@ -161,7 +161,6 @@ gameLoop:
 	ld a, [RIGHT_MAP_SRC_TILES]
 	inc a
 	ld b, a
-
 	; IF a ends with 1111 (aka $1F), the number is at the end of the line.
 	and $1F
 	ld a, b
@@ -173,6 +172,7 @@ gameLoop:
 	ld l, a
 	ld a, [RIGHT_MAP_SRC_TILES + 1]
 	ld h, a
+
 	ld a, (GroundSprite - BackgroundChrs) / $10
 	ld [hl], a
 	reg VBK, 1
@@ -213,7 +213,6 @@ gameLoop:
 	or a
 	jr z, .calcNextScroll
 
-	ld b, b
 	call createNewTile
 	ld hl, GROUND_POS
 	call shiftTiles
@@ -224,20 +223,20 @@ gameLoop:
 	and %11
 	jr nz, .calcNextScroll
 
-	ld d, a
-	ld hl, NB_SPIKES
-	inc [hl]
-	ld a, [hl]
-	ld e, a
-	sla e
-	add hl, de
-	ld a, [CURRENT_SCROLL]
-	ld b, a
-	ld a, $C0
-	sub b
-	ld [hld], a
-	ld a, [GROUND_POS_X8 + 20]
-	ld [hl], a
+;	ld d, a
+;	ld hl, NB_SPIKES
+;	inc [hl]
+;	ld a, [hl]
+;	ld e, a
+;	sla e
+;	add hl, de
+;	ld a, [CURRENT_SCROLL]
+;	ld b, a
+;	ld a, $C0
+;	sub b
+;	ld [hld], a
+;	ld a, [GROUND_POS_X8 + 20]
+;	ld [hl], a
 
 .calcNextScroll:
 	call calcNextScroll

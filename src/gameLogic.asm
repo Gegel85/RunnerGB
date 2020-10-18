@@ -170,9 +170,10 @@ calcNextScroll:
 ;    af -> Not preserved
 ;    b  -> Not preserved
 ;    c  -> Preserved
-;    de -> Preserved
+;    d  -> Not preserved
 ;    hl -> Preserved
 createNewTile::
+	ld d, $FF
 	call random
 	and %110
 
@@ -185,13 +186,15 @@ createNewTile::
 
 .decValue:
 	dec a
+	ld d, 0
 	jr .checkNewTile
 .incValue:
 	inc a
+	ld d, 1
 	jr .checkNewTile
 .setMaxHeight:
 	ld a, $06
-	jr .checkNewTile
+	jr .saveNewTile
 .setMinHeight:
 	ld a, $0F
 	jr .saveNewTile
@@ -208,6 +211,28 @@ createNewTile::
 	sla a
 	sla a
 	ld [GROUND_POS_X8 + 21], a
+
+	bit 1, d
+	ret nz
+	ld a, [RIGHT_MAP_SRC_TILES]
+	bit 0, d
+	jr z, .sub
+	add a, $20
+	jr .end
+.sub
+	sub a, $20
+
+.end
+	ld [RIGHT_MAP_SRC_TILES], a
+	ret nc
+	ld a, [RIGHT_MAP_SRC_TILES + 1]
+	jr z, .sub2
+	add a, $20
+	jr .end
+.sub2
+	sub a, $20
+.end2
+	ld [RIGHT_MAP_SRC_TILES + 1], a
 	ret
 
 ; Shift all the tiles of GROUND_POS and GROUND_POS_X8
