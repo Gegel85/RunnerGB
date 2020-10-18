@@ -87,6 +87,9 @@ initGame:
 
 	call waitVBLANK
 	reset LCD_CONTROL
+	ld [BG_1_POS], a
+	ld [BG_2_POS], a
+	ld [BG_1_POS_COUNTER], a
 
 	ld hl, LEFT_MAP_PTR
 	ld a, (BackgroundTileMap + $1C0) & $FF
@@ -97,13 +100,13 @@ initGame:
 	ld [hli], a
 	ld a, (VRAM_BG_START + $1C0) >> 8
 	ld [hli], a
-	ld a, (BackgroundTileMap + $1C0 + 21) & $FF
+	ld a, (BackgroundTileMap + $1C0 + 22) & $FF
 	ld [hli], a
-	ld a, (BackgroundTileMap + $1C0 + 21) >> 8
+	ld a, (BackgroundTileMap + $1C0 + 22) >> 8
 	ld [hli], a
-	ld a, (VRAM_BG_START + $1C0 + 21) & $FF
+	ld a, (VRAM_BG_START + $1C0 + 22) & $FF
 	ld [hli], a
-	ld a, (VRAM_BG_START + $1C0 + 21) >> 8
+	ld a, (VRAM_BG_START + $1C0 + 22) >> 8
 	ld [hli], a
 
 	ld a, $C
@@ -118,16 +121,16 @@ initGame:
 
 	call copyBgMap
 
-	reg VBK, 1
-	ld a, 1
-	ld de, $99C0
-	ld bc, 22
-	call fillMemory
+	;reg VBK, 1
+	;ld a, 1
+	;ld de, $99C0
+	;ld bc, 23
+	;call fillMemory
 
 	reset VBK
 	ld a, (GroundSprite - BackgroundChrs) / $10
 	ld de, $99C0
-	ld bc, 22
+	ld bc, 23
 	call fillMemory
 
 	reg LYC, 68

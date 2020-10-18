@@ -72,7 +72,7 @@ incrementScore:
 ;    de -> Not preserved
 ;    hl -> Not preserved
 updatePlayerState::
-	ld a, [GROUND_POS_X8 + 3]
+	ld a, [GROUND_POS_X8 + 2]
 	ld e, a
 	ld hl, PLAYER_SPEED_Y
 	ld a, [hld]
@@ -194,17 +194,17 @@ createNewTile::
 	ld d, 1
 	jr .checkNewTile
 .setMaxHeight:
-	ld a, $06
+	ld a, $08
 	jr .saveNewTile
 .setMinHeight:
-	ld a, $0F
+	ld a, $10
 	jr .saveNewTile
 
 .checkNewTile:
 	; min should be 0x4 and max 0x0C
-	cp $06 ; to avoid too high ground
+	cp $08 ; to avoid too high ground
 	jr c, .setMaxHeight
-	cp $0F
+	cp $10
 	jr nc, .setMinHeight
 .saveNewTile:
 	ld [hl], a
