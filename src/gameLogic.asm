@@ -309,6 +309,15 @@ showCredits::
 	ld [de], a
 	ld [de], a
 
+; needed to clear this palette
+	ld b, 8
+	ld hl, creditsPal
+.bgPalLoop2:
+	ld a, [hli]
+	ld [de], a
+	dec b
+	jr nz, .bgPalLoop2
+
 	reg LCD_CONTROL, %11010001
 
 .creditsLoop:
