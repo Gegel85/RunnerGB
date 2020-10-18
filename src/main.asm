@@ -53,7 +53,6 @@ main::
 	cp CGB_A_INIT
 	jp nz, notCGB
 	call init
-	jp showCredits
 
 mainMenu::
 	ld de, PLAYING_MUSICS
@@ -207,6 +206,8 @@ mainMenu::
 	jr nc, .loop
 
 	call getKeys
+	bit SELECT_BIT, a
+    jp z, showCredits
 	bit START_BIT, a
 	jr nz, .loop
 

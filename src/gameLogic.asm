@@ -264,24 +264,11 @@ shiftTiles::
 	jr nz, .loop
 	ret
 
-
-; show the credits
-showCreditsf::
-	;ld b, b
-	call getKeys
-	cpl
-	or a
-	jp nz, mainMenu
-	ld hl, NumbersCredits
-	ld de, VRAM_START
-	ld bc, Credits
-	call copyMemory
-	ret
-
 showCredits::
 	call waitVBLANK
 	reset LCD_CONTROL
-	;reg BGP, $E4
+	reg BGP, $E4
+
 	ld hl, NumbersCredits
     ld de, VRAM_START
     ld bc, EndNumbersCredits - NumbersCredits
@@ -290,7 +277,7 @@ showCredits::
 	ld b, 18
 	push hl
 	ld hl, VRAM_BG_START
-	pop de
+	ld de, CreditsMap
 .loop:
 	ld c, 20
 .miniLoop:
@@ -306,6 +293,22 @@ showCredits::
 	dec b
 	jr nz, .loop
 
+	; palettes
+	ld hl, creditsPal
+	ld de, BGPI
+	ld a, $80
+	ld [de], a
+	inc e
+	ld b, 8 + 6
+.bgPalLoop:
+	ld a, [hli]
+	ld [de], a
+	dec b
+	jr nz, .bgPalLoop
+	xor a
+	ld [de], a
+	ld [de], a
+
 	reg LCD_CONTROL, %11010001
 
 .creditsLoop:
@@ -316,3 +319,9 @@ showCredits::
 	ld a, $90
 	cp [hl]
 	jr nc, .creditsLoop
+
+	call getKeys
+    cpl
+    or a
+    jp nz, mainMenu
+    jr .creditsLoop

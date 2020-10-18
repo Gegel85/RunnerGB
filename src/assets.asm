@@ -54,7 +54,7 @@ EndLogoChr::
 NumbersCredits::
 	incbin "assets/credits.cfx"
 EndNumbersCredits::
-Credits::
-	incbin "assets/credits.map"
+CreditsMap::
+	incbin "assets/credits.tilemap"
 
 include "src/palettes.asm"
