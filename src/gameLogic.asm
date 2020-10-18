@@ -175,13 +175,14 @@ calcNextScroll:
 createNewTile::
 	ld d, $FF
 	call random
+	ld b, a
 	and %110
 
 	ld hl, GROUND_POS + 21
 	ld a, [hl]
 	jr nz, .checkNewTile
 
-	bit 0, a
+	bit 0, b
 	jr z, .incValue
 
 .decValue:
@@ -219,19 +220,19 @@ createNewTile::
 	jr z, .sub
 	add a, $20
 	jr .end
-.sub
+.sub:
 	sub a, $20
 
-.end
+.end:
 	ld [RIGHT_MAP_SRC_TILES], a
 	ret nc
 	ld a, [RIGHT_MAP_SRC_TILES + 1]
 	jr z, .sub2
 	add a, $20
 	jr .end
-.sub2
+.sub2:
 	sub a, $20
-.end2
+.end2:
 	ld [RIGHT_MAP_SRC_TILES + 1], a
 	ret
 
