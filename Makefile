@@ -37,6 +37,7 @@ COLORED_IMGS = \
 	assets/ground.png \
 	assets/scoring_zone.png \
 	assets/bg.png \
+	assets/credits.png \
 
 OBJ_COLORED_IMGS = \
 	assets/spike.png \

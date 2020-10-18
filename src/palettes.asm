@@ -15,3 +15,6 @@ moonPal::
 
 spikePal:
 	incbin "assets/spike.pal"
+
+creditsPal::
+	incbin "assets/credits.pal"

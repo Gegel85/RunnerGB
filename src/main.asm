@@ -8,16 +8,16 @@ notCGB::
 	reset LCD_CONTROL
 	reg BGP, $E4
 	ld hl, NoCGBScreen
-        ld de, VRAM_START
-        ld bc, NoCGBScreenMap - NoCGBScreen
-        call copyMemory
+	ld de, VRAM_START
+	ld bc, NoCGBScreenMap - NoCGBScreen
+	call copyMemory
 
 	ld b, 18
 	push hl
-        ld hl, VRAM_BG_START
-        pop de
+	ld hl, VRAM_BG_START
+	pop de
 .loop:
-        ld c, 20
+	ld c, 20
 .miniLoop:
 	ld a, [de]
 	ld [hli], a
@@ -53,6 +53,8 @@ main::
 	cp CGB_A_INIT
 	jp nz, notCGB
 	call init
+	jp showCredits
+mainMenu::
 
 game::
 	ld hl, SpriteInitArray

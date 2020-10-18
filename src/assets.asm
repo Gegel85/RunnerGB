@@ -1,4 +1,4 @@
-SECTION "Assets", ROMX[$6000], BANK[1]
+SECTION "Assets", ROMX[$4000], BANK[1]
 
 BackgroundTileMap::
 	incbin "assets/bg.map"
@@ -36,5 +36,10 @@ NoCGBScreenMap::
 
 ScoreZoneMap::
 	incbin "assets/scoring_zone.map"
+
+NumbersCredits::
+	incbin "assets/credits.cfx"
+Credits::
+	incbin "assets/credits.map"
 
 include "src/palettes.asm"

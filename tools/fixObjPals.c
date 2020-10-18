@@ -45,12 +45,12 @@ int shiftPals(const char *palPath, char *tilesPath)
     }
     while (fread(tileBuffer, 1, sizeof(tileBuffer), stream)) {
         for (int i = 0; i < 8; i++) {
-            tileBuffer2[0] <<= 1;
-            tileBuffer2[1] <<= 1;
-            tileBuffer2[0] |= (tileBuffer[0] ^ 1) & 1;
-            tileBuffer2[1] |= (tileBuffer[0] ^ tileBuffer[1]) & 1;
-            tileBuffer[0] >>= 1;
-            tileBuffer[1] >>= 1;
+	   tileBuffer2[0] <<= 1;
+	   tileBuffer2[1] <<= 1;
+	   tileBuffer2[0] |= (tileBuffer[0] ^ 1) & 1;
+	   tileBuffer2[1] |= (tileBuffer[0] ^ tileBuffer[1]) & 1;
+	   tileBuffer[0] >>= 1;
+	   tileBuffer[1] >>= 1;
         }
         fwrite(tileBuffer2, 1, sizeof(tileBuffer2), streamOut);
     }

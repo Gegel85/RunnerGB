@@ -263,3 +263,56 @@ shiftTiles::
 
 	jr nz, .loop
 	ret
+
+
+; show the credits
+showCredits::
+	;ld b, b
+	call getKeys
+	cpl
+	or a
+	jp nz, mainMenu
+	ld hl, NumbersCredits
+	ld de, VRAM_START
+	ld bc, Credits
+	call copyMemory
+	ret
+
+showCreditsf::
+	call waitVBLANK
+	reset LCD_CONTROL
+	reg BGP, $E4
+	ld hl, NumbersCredits
+    ld de, VRAM_START
+    ld bc, Credits - NumbersCredits
+	call copyMemory
+
+	ld b, 18
+	push hl
+	ld hl, VRAM_BG_START
+	pop de
+.loop:
+	ld c, 20
+.miniLoop:
+	ld a, [de]
+	ld [hli], a
+	inc de
+	dec c
+	jr nz, .miniLoop
+	push bc
+	ld bc, 12
+	add hl, bc
+	pop bc
+	dec b
+	jr nz, .loop
+
+	reg LCD_CONTROL, %11010001
+
+.creditsLoop:
+	reset INTERRUPT_REQUEST
+	ld [SCROLL_PAST_TILE], a
+	halt
+	ld hl, LY
+	ld a, $90
+	cp [hl]
+	jr nc, .creditsLoop

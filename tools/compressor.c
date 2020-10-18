@@ -39,6 +39,6 @@ int main(int argc, char **argv)
 {
     for (int i = 1; i < argc; i++)
         if (!compress(argv[i]))
-            return EXIT_FAILURE;
+	   return EXIT_FAILURE;
     return EXIT_SUCCESS;
 }
