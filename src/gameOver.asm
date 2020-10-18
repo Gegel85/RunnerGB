@@ -39,7 +39,7 @@ gameOver::
 	jr z, .loop
 
 	di
-	xor a
+	reset SOUND_TERM_CONTROL
 	ld de, PLAYING_MUSICS - 1
 	ld bc, MUSIC_STRUCT_SIZE * 4 + 1
 	call fillMemory
