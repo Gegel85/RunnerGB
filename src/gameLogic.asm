@@ -215,25 +215,25 @@ createNewTile::
 
 	bit 1, d
 	ret nz
-	ld a, [RIGHT_MAP_SRC_TILES]
+
+	ld hl, RIGHT_MAP_SRC_TILES
+	ld a, [hli]
+	push hl
+	ld h, [hl]
+	ld l, a
 	bit 0, d
 	jr z, .sub
-	add a, $20
+	ld de, $20
 	jr .end
 .sub:
-	sub a, $20
-
+	ld de, -$20
 .end:
-	ld [RIGHT_MAP_SRC_TILES], a
-	ret nc
-	ld a, [RIGHT_MAP_SRC_TILES + 1]
-	jr z, .sub2
-	add a, $20
-	jr .end
-.sub2:
-	sub a, $20
-.end2:
-	ld [RIGHT_MAP_SRC_TILES + 1], a
+	add hl, de
+	ld b, l
+	ld a, h
+	pop hl
+	ld [hld], a
+	ld [hl], b
 	ret
 
 ; Shift all the tiles of GROUND_POS and GROUND_POS_X8
