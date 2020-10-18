@@ -161,7 +161,7 @@ gameLoop:
 	ld a, [RIGHT_MAP_SRC_TILES]
 	inc a
 	ld b, a
-	; IF a ends with 1111 (aka $1F), the number is at the end of the line.
+	; IF a ends with %1111 (aka $1F), the number is at the end of the line.
 	and $1F
 	ld a, b
 	jp nz, .noOverflow
