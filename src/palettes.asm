@@ -5,7 +5,7 @@ groundPal::
 	incbin "assets/ground.pal"
 
 playerPal::
-	incbin "assets/ground.pal"
+	incbin "assets/hero1.pal"
 
 moonPal::
 	incbin "assets/moon.pal"
