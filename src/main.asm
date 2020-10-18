@@ -60,8 +60,18 @@ mainMenu::
 	ld hl, MainMenuTheme
 	call startMusic
 
+	reg WX, 167 - 70
+	reg WY, 144 - 18
+
 	call waitVBLANK
 	reset LCD_CONTROL
+
+	reg VBK, 1
+	ld a, 3
+	ld de, $9C00
+	ld bc, 200
+	call fillMemory
+	reset VBK
 
 	ld de, VRAM_START
 	ld hl, MainMenuChrs
@@ -70,6 +80,45 @@ mainMenu::
 
 	ld hl, LogoChrs
 	ld bc, EndLogoChr - LogoChrs
+	call copyMemory
+
+	ld de, $8880
+	ld hl, ScoreZoneSprite
+	ld bc, NumbersSprite - ScoreZoneSprite
+	call copyMemory
+
+	ld hl, $9C00
+	ld de, ScoreZoneMap
+	ld bc, $20 - 9
+.copypyLoop:
+	ld a, [de]
+	inc de
+	add $88
+	ld [hli], a
+	bit 3, l
+	jr z, .copypyLoop
+	bit 0, l
+	jr z, .copypyLoop
+	add hl, bc
+	bit 7, l
+	jr z, .copypyLoop
+
+	ld de, BGPI
+	ld a, $98
+	ld [de], a
+	inc e
+	ld b, 8
+	ld hl, scoreZonePal
+.bgPalLoopk:
+	ld a, [hli]
+	ld [de], a
+	dec b
+	jr nz, .bgPalLoopk
+
+
+	ld de, VRAM_START + $A00
+	ld hl, NumbersSprite
+	ld bc, NumbersEnd - NumbersSprite
 	call copyMemory
 
 	ld hl, $9800
@@ -93,6 +142,13 @@ mainMenu::
 	ld bc, 32 * 32
 	call fillMemory
 	reset VBK
+
+	ld hl, $A000
+	ld de, SCORE
+	ld bc, 3
+	call copyMemory
+
+	call drawScore
 
 	ld hl, mainMenuPal
 	ld de, BGPI
@@ -139,7 +195,7 @@ mainMenu::
 	cp l
 	jr nz, .copyLoop2
 
-	reg LCD_CONTROL, %11010010
+	reg LCD_CONTROL, %11110010
 
 .loop:
 	reset INTERRUPT_REQUEST
@@ -163,41 +219,9 @@ game::
 	ld de, SPRITES_BUFFER
 	call copyMemory
 
-	reg WX, 167 - 70
-	reg WY, 144 - 18
-
-	ld hl, $9C00
-	ld de, ScoreZoneMap
-	ld bc, $20 - 9
-.copyLoop:
-	ld a, [de]
-	inc de
-	add $88
-	ld [hli], a
-	bit 3, l
-	jr z, .copyLoop
-	bit 0, l
-	jr z, .copyLoop
-	add hl, bc
-	bit 7, l
-	jr z, .copyLoop
-
-	reg VBK, 1
-	ld a, 2
-	ld de, $9C00
-	ld bc, 200
-	call fillMemory
-
-	reset VBK
-
 	ld de, VRAM_START
 	ld hl, BackgroundChrs
 	ld bc, NumbersSprite - BackgroundChrs
-	call copyMemory
-
-	ld de, VRAM_START + $A00
-	ld hl, NumbersSprite
-	ld bc, NumbersEnd - NumbersSprite
 	call copyMemory
 
 	ld de, BGPI
