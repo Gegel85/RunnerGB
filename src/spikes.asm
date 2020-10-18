@@ -20,7 +20,8 @@ updateSpikes:
 	xor a
 	ld b, a
 .updateSpikeLoop:
-	inc hl
+	ld a, [hli]
+	ld e, a
 	ld a, [hl]
 	sub d
 	ld [hli], a
@@ -31,7 +32,9 @@ updateSpikes:
 	jr nc, .nextSpike
 	ld b, a
 	ld a, [PLAYER_Y]
-	cp $60
+	dec e
+	dec e
+	cp e
 	jr nc, gameOver
 
 .nextSpike:

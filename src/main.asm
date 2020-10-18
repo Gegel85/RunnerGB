@@ -213,7 +213,6 @@ gameLoop:
 	or a
 	jr z, .calcNextScroll
 
-	ld b, b
 	call createNewTile
 	ld hl, GROUND_POS
 	call shiftTiles
