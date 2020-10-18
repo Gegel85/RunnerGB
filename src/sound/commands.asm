@@ -124,6 +124,7 @@ handlerSetRegisters:
 
 handlerDisableTerminals:
 	pop hl
+	push hl
 	ld bc, CTRL_BYTE - NB_REGISTERS
 	add hl, bc
 
@@ -135,6 +136,7 @@ handlerDisableTerminals:
 	and [hl]
 	ld [hl], a
 
+	pop hl
 	bit 1, [hl]
 	ret z
 
@@ -147,6 +149,7 @@ handlerDisableTerminals:
 
 handlerEnableTerminals:
 	pop hl
+	push hl
 	ld bc, CTRL_BYTE - NB_REGISTERS
 	add hl, bc
 
@@ -158,6 +161,7 @@ handlerEnableTerminals:
 	or [hl]
 	ld [hl], a
 
+	pop hl
 	bit 1, [hl]
 	ret z
 
