@@ -214,7 +214,7 @@ executeMusicCommand::
 	ld l, a
 	ld a, 0
 	adc h
-	ld a, h
+	ld h, a
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
