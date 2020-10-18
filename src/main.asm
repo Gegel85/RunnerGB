@@ -96,9 +96,8 @@ initGame:
 	ld [hli], a
 	ld a, (BackgroundTileMap + $1C0) >> 8
 	ld [hli], a
-	ld a, (VRAM_BG_START + $1C0) & $FF
+	ld a, 0
 	ld [hli], a
-	ld a, (VRAM_BG_START + $1C0) >> 8
 	ld [hli], a
 	ld a, (BackgroundTileMap + $1C0 + 22) & $FF
 	ld [hli], a
@@ -161,6 +160,46 @@ gameLoop:
 
 	reg SCROLL_PAST_TILE, 1
 
+	; Remove the block at the left of the screen
+	ld a, [GROUND_POS_X8]
+	ld l, a
+	ld h, 0
+	sla l
+	rl h
+	sla l
+	rl h
+	ld de, $983F
+	add hl, de ; hl now contains the right line, need to get the right collumn now.
+
+	ld a, [LEFT_MAP_SRC_TILES]
+	inc a
+	cp $20
+	jp nz, .noLeftOverflow
+	ld a, 0
+.noLeftOverflow:
+	ld [LEFT_MAP_SRC_TILES], a
+	ld e, a
+	ld d, 0
+	add hl, de
+	ld b, b
+	push hl ; hl now contains the position of the block to the left.
+
+	ld hl, LEFT_MAP_PTR
+	inc [hl]
+	ld a, [hli]
+	cp $C0 + 32
+	; Oups, does not work.
+	jp nz, .noIconOverflow
+	ld [hl], $C0
+	ld a, $C0
+.noIconOverflow:
+	ld h, [hl]
+	ld l, a
+	ld a, [hl]
+	pop hl
+	ld [hl], a
+
+	; Create a new block at the right of the screen
 	ld a, [RIGHT_MAP_SRC_TILES]
 	inc a
 	ld b, a
@@ -226,20 +265,20 @@ gameLoop:
 	and %11
 	jr nz, .calcNextScroll
 
-	ld d, a
-	ld hl, NB_SPIKES
-	inc [hl]
-	ld a, [hl]
-	ld e, a
-	sla e
-	add hl, de
-	ld a, [CURRENT_SCROLL]
-	ld b, a
-	ld a, $C0
-	sub b
-	ld [hld], a
-	ld a, [GROUND_POS_X8 + 20]
-	ld [hl], a
+;	ld d, a
+;	ld hl, NB_SPIKES
+;	inc [hl]
+;	ld a, [hl]
+;	ld e, a
+;	sla e
+;	add hl, de
+;	ld a, [CURRENT_SCROLL]
+;	ld b, a
+;	ld a, $C0
+;	sub b
+;	ld [hld], a
+;	ld a, [GROUND_POS_X8 + 20]
+;	ld [hl], a
 
 .calcNextScroll:
 	call calcNextScroll
