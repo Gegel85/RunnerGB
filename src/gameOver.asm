@@ -33,4 +33,15 @@ gameOver::
 	call getKeys
 	bit START_BIT, a
 	jp z, initGame
+
+	ld a, [NB_REPEATED]
+	bit 2, a
+	jr z, .loop
+
+	di
+	reset SOUND_TERM_CONTROL
+	ld de, PLAYING_MUSICS - 1
+	ld bc, MUSIC_STRUCT_SIZE * 4 + 1
+	call fillMemory
+	ei
 	jr .loop

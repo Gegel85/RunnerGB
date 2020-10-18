@@ -25,13 +25,15 @@ SRCS = \
 	src/text.asm
 
 IMGS = \
-	assets/player.png \
 	assets/nocgberror.png
 
 COMPRESSED_IMGS = \
 	assets/numbers.png
 
 COLORED_IMGS = \
+	assets/hero1.png \
+	assets/hero2.png \
+	assets/hero_jump.png \
 	assets/ground.png \
 	assets/bg.png \
 
@@ -55,7 +57,7 @@ COMPRESSED_COLORED_IMGS_FX = $(COMPRESSED_COLORED_IMGS:%.png=%.zcfx)
 
 PALS = $(COLORED_IMGS:%.png=%.pal) $(COMPRESSED_COLORED_IMGS:%.png=%.pal) $(OBJ_COLORED_IMGS:%.png=%.pal)
 
-MAPS = $(IMGS:%.png=%.map) $(COMPRESSED_IMGS:%.png=%.map) $(COLORED_IMGS:%.png=%.map) $(COMPRESSED_COLORED_IMGS:%.png=%.map)
+MAPS = $(IMGS:%.png=%.map) $(COMPRESSED_IMGS:%.png=%.map) $(COLORED_IMGS:%.png=%.map) $(COMPRESSED_COLORED_IMGS:%.png=%.map) $(OBJ_COLORED_IMGS:%.png=%.map)
 
 all:	tools/compressor tools/fixObjPals $(NAME).gbc
 

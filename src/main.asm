@@ -215,8 +215,7 @@ gameLoop:
 	ld a, [RIGHT_MAP_SRC_TILES + 1]
 	ld h, a
 
-	ld a, (GroundSprite - BackgroundChrs) / $10
-	ld [hl], a
+	ld [hl], (GroundSprite - BackgroundChrs) / $10
 ;	reg VBK, 1
 ;	ld [hl], 1
 ;	reset VBK

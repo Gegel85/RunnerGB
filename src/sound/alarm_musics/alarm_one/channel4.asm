@@ -1,12 +1,14 @@
 musicChan4AlarmOneTheme::
 	setRegisters $00, $87, $19, $C0
 
-.loop:
-    setVolume $87
-    playRaw $80
+	repeat 4
+	setVolume $87
+	playRaw $80
 	wait QUAVER
 	setVolume $00
-    wait CROTCHET
+	wait CROTCHET
+	stopMusic
 	continue
-    stopMusic
-    jump .loop
+.loop:
+	wait 0
+	jump .loop

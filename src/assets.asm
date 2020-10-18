@@ -6,8 +6,8 @@ BackgroundTileMap::
 BackgroundChrs::
 	incbin "assets/bg.cfx"
 
-PlayerSprite::
-	incbin "assets/player.fx"
+MoonSprite::
+	incbin "assets/moon.ofx"
 
 GroundSprite::
 	incbin "assets/ground.cfx"
@@ -15,8 +15,13 @@ GroundSprite::
 SpikeSprite::
 	incbin "assets/spike.ofx"
 
-MoonSprite::
-	incbin "assets/moon.ofx"
+PlayerSprite::
+	incbin "assets/hero1.cfx"
+	incbin "assets/hero2.cfx"
+
+PlayerJmp::
+	incbin "assets/hero_jump.cfx"
+	incbin "assets/hero_jump.cfx"
 
 NumbersSprite::
 	incbin "assets/numbers.zfx"

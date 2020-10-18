@@ -171,8 +171,13 @@ animatePlayerMoon::
 	ld hl, MOON_POS
 	dec [hl]
 
-	ld hl, SPRITES_BUFFER + $07
-	ld a, 1 << 5
+	ld de, 4
+	ld hl, SPRITES_BUFFER + $02
+	ld a, 2
+	xor [hl]
+	ld [hl], a
+	add hl, de
+	ld a, 2
 	xor [hl]
 	ld [hl], a
 

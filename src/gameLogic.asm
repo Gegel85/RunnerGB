@@ -89,13 +89,23 @@ updatePlayerState::
 	jr nz, .noSpeedChange
 	inc [hl]
 .noSpeedChange:
-	xor a
-	ld d, a
+	ld de, 4
+	ld hl, SPRITES_BUFFER + $02
+	set 2, [hl]
+	add hl, de
+	set 2, [hl]
 	ret
 
 .onGround:
 	ld a, e
 	ld [hli], a
+	ld de, 4
+	push hl
+	ld hl, SPRITES_BUFFER + $02
+	res 2, [hl]
+	add hl, de
+	res 2, [hl]
+	pop hl
 
 .resetSpeed:
 	ld d, a
