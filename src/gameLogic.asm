@@ -1,13 +1,13 @@
 ; Change the game speed
 ; Params:
-;    None
+;	None
 ; Return:
-;    None
+;	None
 ; Registers:
-;    af -> Not preserved
-;    bc -> Not preserved
-;    de -> Preserved
-;    hl -> Preserved
+;	af -> Not preserved
+;	bc -> Not preserved
+;	de -> Preserved
+;	hl -> Preserved
 updateBgSpeed:
 	ld hl, MAX_SCROLL_COUNTER
 	ld a, [hl]
@@ -25,15 +25,15 @@ updateBgSpeed:
 
 ; Increment the score according to the game speed
 ; Params:
-;    None
+;	None
 ; Return:
-;    d -> The second score byte before increment
-;    e -> The second score byte after increment
+;	d -> The second score byte before increment
+;	e -> The second score byte after increment
 ; Registers:
-;    af -> Not preserved
-;    bc -> Not preserved
-;    de -> Not preserved
-;    hl -> Not preserved
+;	af -> Not preserved
+;	bc -> Not preserved
+;	de -> Not preserved
+;	hl -> Not preserved
 incrementScore:
 	ld hl, SCORE
 	ld a, [CURRENT_SCROLL]
@@ -63,14 +63,14 @@ incrementScore:
 
 ; Update the player state, apply speed to pos and gravity to speed
 ; Params:
-;    None
+;	None
 ; Return:
-;    d -> 0 if the player is not able to jump, else a non 0 value
+;	d -> 0 if the player is not able to jump, else a non 0 value
 ; Registers:
-;    af -> Not preserved
-;    bc -> Preserved
-;    de -> Not preserved
-;    hl -> Not preserved
+;	af -> Not preserved
+;	bc -> Preserved
+;	de -> Not preserved
+;	hl -> Not preserved
 updatePlayerState::
 	ld a, [GROUND_POS_X8 + 5]
 	ld e, a
@@ -117,14 +117,14 @@ updatePlayerState::
 
 ; Makes the player jump
 ; Params:
-;    d -> 0 if the player is not able to jump, else a non 0 value
+;	d -> 0 if the player is not able to jump, else a non 0 value
 ; Return:
-;    None
+;	None
 ; Registers:
-;    af -> Not preserved
-;    bc -> Preserved
-;    de -> Preserved
-;    hl -> Not preserved
+;	af -> Not preserved
+;	bc -> Preserved
+;	de -> Preserved
+;	hl -> Not preserved
 playerJump:
 	call random
 	ld a, d
@@ -139,15 +139,15 @@ playerJump:
 
 ; Calculates the next scroll (in pixels)
 ; Params:
-;    None
+;	None
 ; Return:
-;    None
+;	None
 ; Registers:
-;    af -> Not preserved
-;    b  -> Not preserved
-;    c  -> Preserved
-;    de -> Preserved
-;    hl -> Not preserved
+;	af -> Not preserved
+;	b  -> Not preserved
+;	c  -> Preserved
+;	de -> Preserved
+;	hl -> Not preserved
 calcNextScroll:
 	ld a, [MAX_SCROLL]
 	ld b, a
@@ -173,15 +173,15 @@ calcNextScroll:
 
 ; Set the height value for the next ground tile
 ; Params:
-;    None
+;	None
 ; Return:
-;    None
+;	None
 ; Registers:
-;    af -> Not preserved
-;    b  -> Not preserved
-;    c  -> Preserved
-;    d  -> Not preserved
-;    hl -> Preserved
+;	af -> Not preserved
+;	b  -> Not preserved
+;	c  -> Preserved
+;	d  -> Not preserved
+;	hl -> Preserved
 createNewTile::
 	ld d, $FF
 	call random
@@ -244,15 +244,15 @@ createNewTile::
 
 ; Shift all the tiles of GROUND_POS and GROUND_POS_X8
 ; Params:
-;    hl -> startAddress
+;	hl -> startAddress
 ; Return:
-;    None
+;	None
 ; Registers:
-;    af -> Not preserved
-;    b  -> Not preserved
-;    c  -> Preserved
-;    de -> Preserved
-;    hl -> Not preserved
+;	af -> Not preserved
+;	b  -> Not preserved
+;	c  -> Preserved
+;	de -> Preserved
+;	hl -> Not preserved
 shiftTiles::
 	ld b, 24
 .loop:
@@ -270,8 +270,8 @@ showCredits::
 	reg BGP, $E4
 
 	ld hl, NumbersCredits
-    ld de, VRAM_START
-    ld bc, EndNumbersCredits - NumbersCredits
+	ld de, VRAM_START
+	ld bc, EndNumbersCredits - NumbersCredits
 	call copyMemory
 
 	ld b, 18
@@ -330,7 +330,7 @@ showCredits::
 	jr nc, .creditsLoop
 
 	call getKeys
-    cpl
-    or a
-    jp nz, mainMenu
-    jr .creditsLoop
+	cpl
+	or a
+	jp nz, mainMenu
+	jr .creditsLoop

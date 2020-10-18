@@ -35,11 +35,11 @@ notCGB::
 
 ; Locks the CPU
 ; Params:
-;    None
+;	None
 ; Return:
-;    None
+;	None
 ; Registers:
-;    N/A
+;	N/A
 lockup::
 	reset INTERRUPT_REQUEST
 	ld [INTERRUPT_ENABLED], a
@@ -207,7 +207,7 @@ mainMenu::
 
 	call getKeys
 	bit SELECT_BIT, a
-    jp z, showCredits
+	jp z, showCredits
 	bit START_BIT, a
 	jr nz, .loop
 
