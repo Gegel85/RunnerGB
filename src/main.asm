@@ -178,9 +178,9 @@ gameLoop:
 
 	ld a, (GroundSprite - BackgroundChrs) / $10
 	ld [hl], a
-	reg VBK, 1
-	ld [hl], 1
-	reset VBK
+;	reg VBK, 1
+;	ld [hl], 1
+;	reset VBK
 .noSpawn:
 	call drawScore
 	call scrollBg
