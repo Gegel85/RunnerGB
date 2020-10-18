@@ -116,30 +116,16 @@ initGame:
 	ld [BG_1_POS_COUNTER], a
 
 	ld hl, LEFT_MAP_PTR
-	ld a, (BackgroundTileMap + $1C0) & $FF
+	ld a, (BackgroundTileMap) & $FF
 	ld [hli], a
-	ld a, (BackgroundTileMap + $1C0) >> 8
+	ld a, (VRAM_BG_START + $1C0 + 23) & $FF
 	ld [hli], a
-	ld a, 0
+	ld a, (VRAM_BG_START + $1C0 + 23) >> 8
 	ld [hli], a
-	ld [hli], a
-	ld a, (BackgroundTileMap + $1C0 + 22) & $FF
-	ld [hli], a
-	ld a, (BackgroundTileMap + $1C0 + 22) >> 8
-	ld [hli], a
-	ld a, (VRAM_BG_START + $1C0 + 22) & $FF
-	ld [hli], a
-	ld a, (VRAM_BG_START + $1C0 + 22) >> 8
-	ld [hli], a
-
-	ld a, $C
-	ld de, GROUND_POS
-	ld bc, 22
-	call fillMemory
 
 	ld a, $60
 	ld de, GROUND_POS_X8
-	ld bc, 22
+	ld bc, 25
 	call fillMemory
 
 	call copyBgMap
@@ -201,59 +187,34 @@ gameLoop:
 
 	; Remove the block at the left of the screen
 	ld a, [GROUND_POS_X8]
-	ld l, a
-	ld h, 0
-	sla l
-	rl h
-	sla l
-	rl h
-	ld de, $983F
-	add hl, de ; hl now contains the right line, need to get the right collumn now.
-
-	ld a, [LEFT_MAP_SRC_TILES]
-	inc a
-	cp $20
-	jp nz, .noLeftOverflow
+	add $10
+	ld c, a
 	ld a, 0
-.noLeftOverflow:
-	ld [LEFT_MAP_SRC_TILES], a
-	ld e, a
-	ld d, 0
-	add hl, de
-	ld b, b
-	push hl ; hl now contains the position of the block to the left.
-
+	adc 0
+	ld b, a
+	sla c
+	rl b
+	sla c
+	rl b
 	ld hl, LEFT_MAP_PTR
+	ld a, [hl]
 	inc [hl]
+	and 31
+	add c
+	ld c, a
+	ld hl, $9800
+	add hl, bc
+	ld d, h
+	ld e, l
+	ld hl, BackgroundTileMap
+	add hl, bc
+	ld a, [hl]
+	ld [de], a
+
+	ld hl, RIGHT_MAP_PTR
 	ld a, [hli]
-	cp $C0 + 32
-	; Oups, does not work.
-	jp nz, .noIconOverflow
-	ld [hl], $C0
-	ld a, $C0
-.noIconOverflow:
 	ld h, [hl]
 	ld l, a
-	ld a, [hl]
-	pop hl
-	ld [hl], a
-
-	; Create a new block at the right of the screen
-	ld a, [RIGHT_MAP_SRC_TILES]
-	inc a
-	ld b, a
-	; IF a ends with %1111 (aka $1F), the number is at the end of the line.
-	and $1F
-	ld a, b
-	jp nz, .noOverflow
-	sub $20
-	and $F0
-.noOverflow:
-	ld [RIGHT_MAP_SRC_TILES], a
-	ld l, a
-	ld a, [RIGHT_MAP_SRC_TILES + 1]
-	ld h, a
-
 	ld [hl], (GroundSprite - BackgroundChrs) / $10
 ;	reg VBK, 1
 ;	ld [hl], 1
@@ -294,8 +255,6 @@ gameLoop:
 	jr z, .calcNextScroll
 
 	call createNewTile
-	ld hl, GROUND_POS
-	call shiftTiles
 	ld hl, GROUND_POS_X8
 	call shiftTiles
 
@@ -303,20 +262,20 @@ gameLoop:
 	and %11
 	jr nz, .calcNextScroll
 
-;	ld d, a
-;	ld hl, NB_SPIKES
-;	inc [hl]
-;	ld a, [hl]
-;	ld e, a
-;	sla e
-;	add hl, de
-;	ld a, [CURRENT_SCROLL]
-;	ld b, a
-;	ld a, $C0
-;	sub b
-;	ld [hld], a
-;	ld a, [GROUND_POS_X8 + 20]
-;	ld [hl], a
+	ld d, a
+	ld hl, NB_SPIKES
+	inc [hl]
+	ld a, [hl]
+	ld e, a
+	sla e
+	add hl, de
+	ld a, [CURRENT_SCROLL]
+	ld b, a
+	ld a, $C0
+	sub b
+	ld [hld], a
+	ld a, [GROUND_POS_X8 + 23]
+	ld [hl], a
 
 .calcNextScroll:
 	call calcNextScroll
