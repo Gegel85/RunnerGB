@@ -23,12 +23,18 @@ PlayerJmp::
 	incbin "assets/hero_jump.cfx"
 	incbin "assets/hero_jump.cfx"
 
+ScoreZoneSprite::
+	incbin "assets/scoring_zone.cfx"
+
 NumbersSprite::
-	incbin "assets/numbers.zfx"
+	incbin "assets/numbers.fx"
 NoCGBScreen::
 NumbersEnd::
 	incbin "assets/nocgberror.fx"
 NoCGBScreenMap::
 	incbin "assets/nocgberror.map"
+
+ScoreZoneMap::
+	incbin "assets/scoring_zone.map"
 
 include "src/palettes.asm"

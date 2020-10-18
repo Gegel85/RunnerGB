@@ -44,7 +44,7 @@ init::
 	ld de, VRAM_START + $A00
 	ld hl, NumbersSprite
 	ld bc, NumbersEnd - NumbersSprite
-	call uncompress
+	call copyMemory
 
         ld de, $FF80
         ld hl, initDMA
@@ -55,7 +55,7 @@ init::
 	ld a, $80
 	ld [de], a
 	inc e
-	ld b, 8 * 2
+	ld b, 8 * 3
 	ld hl, bgPal
 .bgPalLoop:
 	ld a, [hli]

@@ -4,6 +4,9 @@ bgPal::
 groundPal::
 	incbin "assets/ground.pal"
 
+scoreZonePal::
+	incbin "assets/scoring_zone.pal"
+
 playerPal::
 	incbin "assets/hero1.pal"
 

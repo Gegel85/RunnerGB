@@ -136,7 +136,7 @@ copyBgMap::
 ;    hl -> Not preserved
 drawScore:
 	ld de, SCORE
-	ld hl, VRAM_WIN_START + $06
+	ld hl, VRAM_WIN_START + $28
 .loop:
 	ld a, [de]
 	inc de
@@ -150,10 +150,11 @@ drawScore:
 	and %00001111
 	or $A0
 	ld [hl], a
-	xor a
-	or l
-	jr nz, .loop
-	ret
+	ld a, %00001111
+	and l
+	ret z
+	dec l
+	jr .loop
 
 
 ; Animate the player and the moon

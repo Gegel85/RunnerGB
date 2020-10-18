@@ -60,8 +60,32 @@ game::
 	ld de, SPRITES_BUFFER
 	call copyMemory
 
-	reg WX, $78
-	reg WY, $88
+	reg WX, 167 - 70
+	reg WY, 144 - 18
+
+	ld hl, $9C00
+	ld de, ScoreZoneMap
+	ld bc, $20 - 9
+.copyLoop:
+	ld a, [de]
+	inc de
+	add $88
+	ld [hli], a
+	bit 3, l
+	jr z, .copyLoop
+	bit 0, l
+	jr z, .copyLoop
+	add hl, bc
+	bit 7, l
+	jr z, .copyLoop
+
+	reg VBK, 1
+	ld a, 2
+	ld de, $9C00
+	ld bc, 200
+	call fillMemory
+
+	reset VBK
 
 initGame:
 	ld de, PLAYING_MUSICS
@@ -133,6 +157,7 @@ initGame:
 	ld bc, 23
 	call fillMemory
 
+	reg CLOCK_ANIM, 1
 	reg LYC, 68
 	reg STAT_CONTROL, %01000000
 
@@ -146,6 +171,20 @@ gameLoop:
 	cp [hl]
 	jr nc, gameLoop
 
+	ld hl, CLOCK_ANIM
+	dec [hl]
+	jr nz, .skip
+	ld [hl], 60
+	ld hl, $9c22
+	ld a, [hl]
+	xor %00111010
+	ld [hli], a
+	inc l
+	inc l
+	ld a, [hl]
+	xor %00111010
+	ld [hli], a
+.skip:
 	ld hl, SPAWN_COUNTER
 	ld a, [CURRENT_SCROLL]
 	add [hl]

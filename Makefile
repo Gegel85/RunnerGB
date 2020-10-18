@@ -25,16 +25,17 @@ SRCS = \
 	src/text.asm
 
 IMGS = \
-	assets/nocgberror.png
+	assets/nocgberror.png \
+	assets/numbers.png
 
 COMPRESSED_IMGS = \
-	assets/numbers.png
 
 COLORED_IMGS = \
 	assets/hero1.png \
 	assets/hero2.png \
 	assets/hero_jump.png \
 	assets/ground.png \
+	assets/scoring_zone.png \
 	assets/bg.png \
 
 OBJ_COLORED_IMGS = \
