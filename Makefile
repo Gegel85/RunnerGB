@@ -37,7 +37,11 @@ COLORED_IMGS = \
 	assets/ground.png \
 	assets/scoring_zone.png \
 	assets/bg.png \
+	assets/main_menu.png \
+	assets/logo.png \
 	assets/credits.png \
+
+COMPLEX_COLORED_IMGS = \
 
 OBJ_COLORED_IMGS = \
 	assets/spike.png \
@@ -53,21 +57,26 @@ COMPRESSEDIMGSFX = $(COMPRESSED_IMGS:%.png=%.zfx)
 
 COLORED_IMGS_FX = $(COLORED_IMGS:%.png=%.cfx)
 
+COMPLEX_COLORED_IMGS_FX = $(COMPLEX_COLORED_IMGS:%.png=%.ccfx)
+
 OBJ_COLORED_IMGS_FX = $(OBJ_COLORED_IMGS:%.png=%.ofx)
 
 COMPRESSED_COLORED_IMGS_FX = $(COMPRESSED_COLORED_IMGS:%.png=%.zcfx)
 
 PALS = $(COLORED_IMGS:%.png=%.pal) $(COMPRESSED_COLORED_IMGS:%.png=%.pal) $(OBJ_COLORED_IMGS:%.png=%.pal)
 
-MAPS = $(IMGS:%.png=%.map) $(COMPRESSED_IMGS:%.png=%.map) $(COLORED_IMGS:%.png=%.map) $(COMPRESSED_COLORED_IMGS:%.png=%.map) $(OBJ_COLORED_IMGS:%.png=%.map)
+MAPS = $(IMGS:%.png=%.tilemap) $(COMPRESSED_IMGS:%.png=%.tilemap) $(COLORED_IMGS:%.png=%.tilemap) $(COMPRESSED_COLORED_IMGS:%.png=%.tilemap) $(OBJ_COLORED_IMGS:%.png=%.tilemap)
 
-all:	tools/compressor tools/fixObjPals $(NAME).gbc
+all:	tools/compressor tools/fixObjPals tools/gbc_converter $(NAME).$(EXT)
 
 tools/compressor:
 	$(MAKE) -C tools compressor
 
 tools/fixObjPals:
 	$(MAKE) -C tools fixObjPals
+
+tools/gbc_converter:
+	$(MAKE) -C tools gbc_converter
 
 run:	re
 	wine "$(BGB_PATH)" ./$(NAME).gbc
@@ -76,28 +85,32 @@ runw:	re
 	"$(BGB_PATH)" ./$(NAME).gbc
 
 %.fx : %.png
-	$(FX) $(FXFLAGS) -t `echo $@ | sed 's/.\{3\}$$//'`.map -o $@ $<
+	$(FX) $(FXFLAGS) -T -o $@ $<
 
 %.cfx : %.png
-	$(FX) $(FXFLAGS) -t `echo $@ | sed 's/.\{4\}$$//'`.map -P -o $@ $<
+	$(FX) $(FXFLAGS) -T -P -o $@ $<
 
 %.ofx : %.png
-	$(FX) $(FXFLAGS) -t `echo $@ | sed 's/.\{4\}$$//'`.map -P -o `echo $@ | sed 's/.\{1\}$$//'`o $<
+	$(FX) $(FXFLAGS) -T -P -o `echo $@ | sed 's/.\{1\}$$//'`o $<
 	tools/fixObjPals `echo $@ | sed 's/.\{4\}$$//'`.pal `echo $@ | sed 's/.\{1\}$$//'`o
 
 %.zfx : %.png
-	$(FX) $(FXFLAGS) -t `echo $@ | sed 's/.\{4\}$$//'`.map -o $@ $<
+	$(FX) $(FXFLAGS) -T -o $@ $<
 	tools/compressor $@
 
+%.ccfx : %.png
+	echo tools/gbc_converter $< $@ `echo $@ | sed 's/.\{4\}$$//'`.pal `echo $@ | sed 's/.\{4\}$$//'`.attrmap `echo $@ | sed 's/.\{4\}$$//'`.tilemap
+	tools/gbc_converter $< $@ `echo $@ | sed 's/.\{4\}$$//'`.pal `echo $@ | sed 's/.\{4\}$$//'`.attrmap `echo $@ | sed 's/.\{4\}$$//'`.tilemap
+
 %.zcfx : %.png
-	$(FX) $(FXFLAGS) -t `echo $@ | sed 's/.\{5\}$$//'`.map -P -o $@ $<
+	$(FX) $(FXFLAGS) -T -P -o $@ $<
 	tools/palette_fixer $(@:%.zcfx=%.pal)
 	tools/compressor $@
 
 %.o : %.asm
 	$(ASM) -o $@ $(ASMFLAGS) $<
 
-$(NAME).$(EXT): $(COLORED_IMGS_FX) $(COMPRESSED_COLORED_IMGS_FX) $(OBJ_COLORED_IMGS_FX) $(COMPRESSEDIMGSFX) $(IMGSFX) $(OBJS) $(OBJ_COLORED_IMGS_FX)
+$(NAME).$(EXT): $(COLORED_IMGS_FX) $(COMPRESSED_COLORED_IMGS_FX) $(OBJ_COLORED_IMGS_FX) $(COMPRESSEDIMGSFX) $(IMGSFX) $(OBJS) $(OBJ_COLORED_IMGS_FX) $(COMPLEX_COLORED_IMGS_FX)
 	$(LD) $(LDFLAGS) -o $@ $(OBJS)
 	$(FIX) $(FIXFLAGS) $@
 
