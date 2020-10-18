@@ -167,7 +167,7 @@ gameLoop:
 	jp nz, .noOverflow
 	sub $20
 	and $F0
-.noOverflow
+.noOverflow:
 	ld [RIGHT_MAP_SRC_TILES], a
 	ld l, a
 	ld a, [RIGHT_MAP_SRC_TILES + 1]
@@ -223,20 +223,20 @@ gameLoop:
 	and %11
 	jr nz, .calcNextScroll
 
-;	ld d, a
-;	ld hl, NB_SPIKES
-;	inc [hl]
-;	ld a, [hl]
-;	ld e, a
-;	sla e
-;	add hl, de
-;	ld a, [CURRENT_SCROLL]
-;	ld b, a
-;	ld a, $C0
-;	sub b
-;	ld [hld], a
-;	ld a, [GROUND_POS_X8 + 20]
-;	ld [hl], a
+	ld d, a
+	ld hl, NB_SPIKES
+	inc [hl]
+	ld a, [hl]
+	ld e, a
+	sla e
+	add hl, de
+	ld a, [CURRENT_SCROLL]
+	ld b, a
+	ld a, $C0
+	sub b
+	ld [hld], a
+	ld a, [GROUND_POS_X8 + 20]
+	ld [hl], a
 
 .calcNextScroll:
 	call calcNextScroll
