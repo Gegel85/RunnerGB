@@ -72,7 +72,7 @@ incrementScore:
 ;    de -> Not preserved
 ;    hl -> Not preserved
 updatePlayerState::
-	ld a, [GROUND_POS_X8 + 2]
+	ld a, [GROUND_POS_X8 + 5]
 	ld e, a
 	ld hl, PLAYER_SPEED_Y
 	ld a, [hld]
@@ -188,57 +188,53 @@ createNewTile::
 	ld b, a
 	and %110
 
-	ld hl, GROUND_POS + 21
+	ld hl, GROUND_POS_X8 + 24
 	ld a, [hl]
-	jr nz, .checkNewTile
+	jr nz, .saveNewTile
 
 	bit 0, b
 	jr z, .incValue
 
 .decValue:
-	dec a
+	cp $08 * 8 ; to avoid too high ground
+	jr c, .saveNewTile
+	sub 8
 	ld d, 0
-	jr .checkNewTile
+	jr .saveNewTile
 .incValue:
-	inc a
+	cp $D * 8
+	jr z, .saveNewTile
+	add 8
 	ld d, 1
-	jr .checkNewTile
-.setMaxHeight:
-	ld a, $08
-	jr .saveNewTile
-.setMinHeight:
-	ld a, $10
-	jr .saveNewTile
-
-.checkNewTile:
-	; min should be 0x4 and max 0x0C
-	cp $08 ; to avoid too high ground
-	jr c, .setMaxHeight
-	cp $10
-	jr nc, .setMinHeight
 .saveNewTile:
 	ld [hl], a
-	sla a
-	sla a
-	sla a
-	ld [GROUND_POS_X8 + 21], a
 
-	bit 1, d
-	ret nz
-
-	ld hl, RIGHT_MAP_SRC_TILES
+	ld hl, RIGHT_MAP_PTR
 	ld a, [hli]
 	push hl
 	ld h, [hl]
+	ld b, a
+	inc a
+	and 31
 	ld l, a
+	ld a, ~31
+	and b
+	or l
+	ld l, a
+
+	bit 1, d
+	jr nz, .save
+
 	bit 0, d
 	jr z, .sub
+
 	ld de, $20
 	jr .end
 .sub:
 	ld de, -$20
 .end:
 	add hl, de
+.save:
 	ld b, l
 	ld a, h
 	pop hl
@@ -258,7 +254,7 @@ createNewTile::
 ;    de -> Preserved
 ;    hl -> Not preserved
 shiftTiles::
-	ld b, 21
+	ld b, 24
 .loop:
 	inc hl
 	ld a, [hld]
